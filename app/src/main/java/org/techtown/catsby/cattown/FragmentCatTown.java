@@ -12,11 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
+import org.techtown.catsby.cattown.model.Cat;
+
+import java.util.ArrayList;
 
 public class FragmentCatTown extends Fragment {
-
     RecyclerView recyclerView;
-    FragmentCattownAdapter adapter;
+    FragmentCatTownAdapter adapter;
+    ArrayList<Cat> catList;
+
+    private int catpicture;
+    private String name;
+    private int helppeople;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -24,14 +32,42 @@ public class FragmentCatTown extends Fragment {
         super.onCreate(savedInstanceState);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
-        adapter = new FragmentCattownAdapter();
+        catList = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
-            String str = i + " 고양이";
-            adapter.setArrayData(str);
-        }
+        adapter = new FragmentCatTownAdapter(catList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
+        catpicture = R.drawable.pic_001;
+        name = "Happy";
+        helppeople = 2;
+
+        addItem(catpicture, name + "  1", helppeople);
+        addItem(catpicture, name+ "  2", helppeople);
+        addItem(catpicture, name + "  3", helppeople);
+        addItem(catpicture, name + "  4", helppeople);
+        addItem(catpicture, name + "  5", helppeople);
+        addItem(catpicture, name + "  6", helppeople);
+        addItem(catpicture, name + "  7", helppeople);
+        addItem(catpicture, name + "  8", helppeople);
+        addItem(catpicture, name + "  9", helppeople);
+        addItem(catpicture, name + "  6", helppeople);
+        addItem(catpicture, name + "  7", helppeople);
+        addItem(catpicture, name + "  8", helppeople);
+        addItem(catpicture, name + "  9", helppeople);
+        addItem(catpicture, name + "  6", helppeople);
+        addItem(catpicture, name + "  7", helppeople);
+        addItem(catpicture, name + "  8", helppeople);
+        addItem(catpicture, name + "  9", helppeople);
+
+        adapter.notifyDataSetChanged();
         return view;
+    }
+
+    private void addItem(int picture, String catname, int people) {
+        Cat cat = new Cat();
+        cat.setCatPicture(picture);
+        cat.setName(catname);
+        cat.setHelpPeople(people);
+        catList.add(cat);
     }
 }

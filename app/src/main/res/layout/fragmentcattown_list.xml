@@ -6,27 +6,30 @@
     android:layout_height="50dp">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
+        android:id="@+id/towncatimage"
+        android:layout_width="110dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/ic_launcher_background"
+        android:layout_marginBottom="10dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/towncatname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="100dp"
         android:gravity="center_vertical"
-        android:text="text"
         android:textColor="#FFFFFF"
         android:textSize="20dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/towncathelppeople"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_launcher_foreground"
-        android:id="@+id/imageView1"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="100dp"
+        android:gravity="center_vertical"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
 
 </RelativeLayout>
