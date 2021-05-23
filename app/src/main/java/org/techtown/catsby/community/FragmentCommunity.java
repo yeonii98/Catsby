@@ -27,7 +27,7 @@ public class FragmentCommunity extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-        String[] list = {"고양이가 많이 아파요..", "다들 고양이 얼마나 키우셨나요?", "(사진)"};
+        String[] list = {"고양이가 많이 아파요ㅜㅜ", "다들 고양이 얼마나 키우셨나요?", "츄르 추천 해주세요!", "(사진)"};
 
         ListView listView = (ListView) view.findViewById(R.id.list);
 
