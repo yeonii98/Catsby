@@ -37,7 +37,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     final FeedAdapter feedAdapter = new FeedAdapter(feedList);
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         super.onCreate(savedInstanceState);
 
