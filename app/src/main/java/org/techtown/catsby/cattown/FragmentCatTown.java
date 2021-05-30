@@ -63,11 +63,11 @@ public class FragmentCatTown extends Fragment {
         return view;
     }
 
-    private void addItem(int picture, String catname, int people) {
+    private void addItem(int picture, String catName, int helper) {
         Cat cat = new Cat();
         cat.setCatPicture(picture);
-        cat.setName(catname);
-        cat.setHelpPeople(people);
+        cat.setName(catName);
+        cat.setHelpPeople(helper);
         catList.add(cat);
     }
 }

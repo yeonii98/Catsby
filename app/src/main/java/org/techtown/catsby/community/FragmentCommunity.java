@@ -97,76 +97,9 @@ public class FragmentCommunity extends Fragment {
             }
         });
 
-        new BackgroundTask().execute();
         return view;
     }
 
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
-        String target;
-        @Override
-        protected void onPreExecute() {
-            target="http://zzin0616.dothome.co.kr/myadmin/NoticeList.php";
-        }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            try{
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp=bufferedReader.readLine())!=null)
-                {
-                    stringBuilder.append(temp+"\n");
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values){
-            super.onProgressUpdate();
-        }
-
-        public String getTarget() {
-            return target;
-        }
-
-        public void setTarget(String target) {
-            this.target = target;
-        }
-
-        @Override
-        public void onPostExecute(String result){
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("response");
-                int count = 0;
-                String noticeContent, noticeName, noticeDate;
-                while (count < jsonArray.length())
-                {
-                    JSONObject object = jsonArray.getJSONObject(count);
-                    noticeContent = object.getString("noticeContent");
-                    noticeName = object.getString("noticeName");
-                    noticeDate = object.getString("noticeDate");
-                    FragmentCommunityNotice notice = new FragmentCommunityNotice(noticeContent, noticeName, noticeDate);
-                    noticeList.add((FragmentCommunityNotice) FragmentCommunityNotice);
-                    adapter.notifyDataSetChanged();
-                    count++;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 
