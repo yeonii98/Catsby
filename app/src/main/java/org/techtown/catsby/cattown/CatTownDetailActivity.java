@@ -3,6 +3,7 @@ package org.techtown.catsby.cattown;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.w3c.dom.Text;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -41,8 +44,10 @@ public class CatTownDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cattown_detail);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_alcohol_detail);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         String catName = intent.getStringExtra("id");
@@ -77,6 +82,17 @@ public class CatTownDetailActivity extends AppCompatActivity {
         });
 
         setupIndicators(images.length);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupIndicators(int count) {
