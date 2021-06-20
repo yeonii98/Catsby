@@ -1,5 +1,6 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,15 @@ public class FragmentBowlInfo extends Fragment {
         imageView = (ImageView)view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_launcher_background);
 
+        Bundle bundle = getArguments();
+
         name = (TextView)view.findViewById(R.id.name);
-        name.setText("남산타워 밥그릇");
+        if(bundle != null){
+            name.setText(bundle.getString("name"));
+        }else{
+            name.setText("밥그릇~^^");
+        }
+
 
         time = (TextView)view.findViewById(R.id.time);
         time.setText("10분 전");

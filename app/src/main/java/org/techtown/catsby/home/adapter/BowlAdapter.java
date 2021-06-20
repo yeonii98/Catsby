@@ -68,7 +68,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                 public void onClick(View v) {
                     TextView name = v.findViewById(R.id.bowl_name);
                     Intent intent = new Intent(v.getContext(), BowlActivity.class);
-                    
+                    intent.putExtra("name", name.getText());
                     v.getContext().startActivity(intent);
                 }
             });
