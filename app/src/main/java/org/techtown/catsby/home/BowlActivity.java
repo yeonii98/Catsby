@@ -17,7 +17,7 @@ public class BowlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bowl);
 
         //뷰페이저 세팅
         ViewPager viewPager = findViewById(R.id.viewPager);

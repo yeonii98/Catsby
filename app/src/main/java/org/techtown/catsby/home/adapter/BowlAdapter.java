@@ -1,5 +1,6 @@
 package org.techtown.catsby.home.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.home.BowlActivity;
 import org.techtown.catsby.home.model.Bowl;
 
 import java.util.ArrayList;
@@ -63,8 +65,11 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener(){
 
                 @Override
-                public void onClick(View view) {
-                    bListener.onItemClicked(pos);
+                public void onClick(View v) {
+                    TextView name = v.findViewById(R.id.bowl_name);
+                    Intent intent = new Intent(v.getContext(), BowlActivity.class);
+                    
+                    v.getContext().startActivity(intent);
                 }
             });
         }
