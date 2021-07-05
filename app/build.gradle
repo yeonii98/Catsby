@@ -1,5 +1,9 @@
 plugins {
     id 'com.android.application'
+    //kotlin 혼용 추가코드 3
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -43,4 +47,7 @@ dependencies {
 
     //circleimageview
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //kotlin 혼용 추가코드 4
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
