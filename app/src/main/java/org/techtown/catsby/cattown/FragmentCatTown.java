@@ -23,7 +23,6 @@ import org.techtown.catsby.cattown.model.Cat;
 import java.util.ArrayList;
 
 public class FragmentCatTown extends Fragment {
-
     RecyclerView recyclerView;
     FragmentCatTownAdapter adapter;
     ArrayList<Cat> catList;
