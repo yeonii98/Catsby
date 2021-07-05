@@ -46,25 +46,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
-        return true ;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_notice:
-                Intent notificateionIntent = new Intent(this, NotificationActivity.class);
-                startActivity(notificateionIntent);
-            case R.id.action_add:
-                Intent addCatIntent = new Intent(this, AddCatActivity.class);
-                startActivity(addCatIntent);
-            default:
-                return super.onOptionsItemSelected(item) ;
-        }
-    }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
         @SuppressLint("NonConstantResourceId")
