@@ -2,6 +2,7 @@ package org.techtown.catsby;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true ;
     }
 
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
             default:
-                return super.onOptionsItemSelected(item) ;
+                return super.onOptionsItemSelected(item);
         }
     }
 

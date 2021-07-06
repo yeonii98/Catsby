@@ -1,12 +1,15 @@
 package org.techtown.catsby.notification;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import org.techtown.catsby.R;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +38,11 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
 //        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -46,6 +54,17 @@ public class NotificationActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 //    public boolean onCreateOptionsMenu(Menu menu)
 //    {
