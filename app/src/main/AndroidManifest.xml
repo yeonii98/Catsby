@@ -2,7 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.techtown.catsby">
 
+
+    <permission android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -18,8 +30,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".notification.NotificationActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".home.BowlActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCJXn12phyYjzxoaD-XObbR9Ee4de7ZSBg"/>
+
         <activity android:name=".notification.NotificationActivity"/>
         <activity android:name=".cattown.CatTownDetailActivity"/>
+
     </application>
 
 </manifest>
