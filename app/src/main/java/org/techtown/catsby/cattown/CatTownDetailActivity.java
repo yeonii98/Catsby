@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +35,8 @@ public class CatTownDetailActivity extends AppCompatActivity {
 
     private CheckBox yesNeuter;
     private CheckBox noNeuter;
+
+    private Button editBtn;
 
     private String[] images = new String[] {
             "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg",
@@ -82,6 +86,15 @@ public class CatTownDetailActivity extends AppCompatActivity {
         });
 
         setupIndicators(images.length);
+
+//        editBtn = (Button) findViewById(R.id.btn_cattown_edit);
+//        editBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), CatTownEditActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override

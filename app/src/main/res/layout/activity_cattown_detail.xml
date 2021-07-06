@@ -179,10 +179,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/feature"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="정보 수정하기"/>
+<!--            <Button-->
+<!--                android:id="@+id/btn_cattown_edit"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="정보 수정하기"/>-->
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
