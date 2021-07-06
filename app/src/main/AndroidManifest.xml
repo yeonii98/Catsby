@@ -38,9 +38,8 @@
             android:name=".home.BowlActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCJXn12phyYjzxoaD-XObbR9Ee4de7ZSBg"/>
+            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I"/>
 
-        <activity android:name=".notification.NotificationActivity"/>
         <activity android:name=".cattown.CatTownDetailActivity"/>
 
     </application>
