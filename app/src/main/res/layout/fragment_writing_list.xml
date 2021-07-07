@@ -25,13 +25,17 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal">
+
        <Button
+           android:id="@+id/writingbtn"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:text="게시글"
+           android:layout_weight="1"
            android:backgroundTint="#A1CCD8"
-           android:layout_weight="1" />
+           android:text="게시글" />
+
        <Button
+           android:id="@+id/commentbtn"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:text="댓글"
@@ -43,8 +47,15 @@
         android:id="@+id/writingListFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        />
+        android:layout_margin="15dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </FrameLayout>
     <!--게시글, 댓글은 리사이클러 뷰로 구현 깃 연동하고 구현해야 할듯!-->
 
 </LinearLayout>
