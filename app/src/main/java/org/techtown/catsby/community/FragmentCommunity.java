@@ -56,7 +56,6 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
             }
         });
 
-
         noticeListView = (ListView) view.findViewById(R.id.noticeListView);
         noticeList = new ArrayList<Notice>();
         noticeList.add(new Notice("고양이가 아픈데 병원 추천 부탁드려요ㅠㅠ", "익명", "2021-04-05"));
@@ -65,7 +64,6 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
         adapter = new NoticeListAdapter(getActivity().getApplicationContext(), noticeList);
         noticeListView.setAdapter(adapter);
 
-        // final Button btn1 = (Button) findViewById(R.id.search_view);
         final Button btn2 = (Button) view.findViewById(R.id.btn2);
         final Button btn3 = (Button) view.findViewById(R.id.btn3);
         final Button btn4 = (Button) view.findViewById(R.id.btn4);
@@ -85,10 +83,6 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
     {
         String target;
 
-        /*    @Override
-            protected void onPreExecute() {
-                target="http://zzin0616.dothome.co.kr/myadmin/NoticeList.php";
-            } */
         @Override
         protected String doInBackground(Void... voids) {
             try{
