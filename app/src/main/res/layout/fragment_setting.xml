@@ -121,6 +121,11 @@
             android:textSize="25dp" />
 
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QR 생성 테스트"
+            android:id="@+id/qrcreate" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
