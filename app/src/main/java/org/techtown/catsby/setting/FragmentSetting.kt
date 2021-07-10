@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
 import org.techtown.catsby.R
@@ -37,6 +38,8 @@ class FragmentSetting : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -56,6 +59,8 @@ class FragmentSetting : Fragment() {
     lateinit var accountManage : TextView
     lateinit var writingList : TextView
 
+    var txtadd: String? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,6 +75,15 @@ class FragmentSetting : Fragment() {
         alertManage = view.findViewById<TextView>(R.id.alertManage)
         accountManage = view.findViewById<TextView>(R.id.accountManage)
         writingList = view.findViewById<TextView>(R.id.writingList)
+
+        setFragmentResultListener("myaddkey") { key, bundle ->
+            bundle.getString("myaddkey")?.let {
+                //프로필에 주소 등록
+                //나중에 데이터 베이스에 등록 후 전역으로 setText 해야할듯..?
+                local.setText(it)
+            }
+        }
+
 
         alertManage.setOnClickListener {
             //setFrag(0)
@@ -121,7 +135,7 @@ class FragmentSetting : Fragment() {
     }
 
     private fun replaceFragment(fragment: Fragment){
-        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val fragmentTransaction: FragmentTransaction = requireFragmentManager().beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
     }
@@ -153,6 +167,7 @@ class FragmentSetting : Fragment() {
     }
 
     companion object {
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

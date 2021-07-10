@@ -65,9 +65,9 @@ class writingList : Fragment() {
             val adapter2 = CommentAdapter()
             //내 댓글 ui ex
             adapter2.items.add(Comment("너무 귀여워요", "저희 집 고양이좀 보고가세요"))
-            adapter2.items.add(Comment("마스가 좋을 것 같네요", "고양이 이름 지어주세요"))
-            adapter2.items.add(Comment("8kg 정도 돼보여요", "몇키로 정도 되보이나요? 이 정도면 뚱냥인가요"))
-            adapter2.items.add(Comment("뚱냥이 절대 아니에요", "몇키로 정도 되보이나요? 이 정도면 뚱냥인가요"))
+            adapter2.items.add(Comment("탐돌이가 좋을 것 같네요", "고양이 이름 지어주세요"))
+            adapter2.items.add(Comment("8kg 정도 돼보여요", "몇키로 정도 돼보이나요? 이 정도면 뚱냥인가요"))
+            adapter2.items.add(Comment("뚱냥이 절대 아니에요", "몇키로 정도 돼보이나요? 이 정도면 뚱냥인가요"))
             recyclerView1.adapter = adapter2
         }
 

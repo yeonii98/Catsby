@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:text="테헤란로"
+                        android:text="동네를 설정하세요"
                         android:textSize="15dp" />
 
                     <TextView
