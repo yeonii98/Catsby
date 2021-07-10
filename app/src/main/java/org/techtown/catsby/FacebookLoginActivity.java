@@ -47,7 +47,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
         buttonFacebook = (LoginButton) findViewById(R.id.btn_facebook_login);
-        buttonFacebook.setPermissions("email","public_profile");
+        buttonFacebook.setReadPermissions("email","public_profile");
         buttonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
