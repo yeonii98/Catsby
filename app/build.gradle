@@ -69,8 +69,6 @@ dependencies {
     //fragment
     def fragment_version = "1.3.0-alpha04"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
-
-    //create QR
-    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+    
 
 }
