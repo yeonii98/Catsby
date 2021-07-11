@@ -10,12 +10,12 @@ import org.techtown.catsby.R;
 
 import java.util.List;
 
-public class FragmentCommunityNoticeAdapter extends BaseAdapter {
+public class NoticeListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<FragmentCommunityNotice> noticeList;
+    private List<Notice> noticeList;
 
-    public FragmentCommunityNoticeAdapter(Context context, List<FragmentCommunityNotice> noticeList) {
+    public NoticeListAdapter(Context context, List<Notice> noticeList) {
         this.context = context;
         this.noticeList = noticeList;
     }
@@ -37,7 +37,7 @@ public class FragmentCommunityNoticeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup){
-        View v = View.inflate(context, R.layout.fragmentcommunity_notice, null);
+        View v = View.inflate(context, R.layout.notice, null);
         TextView noticeText = (TextView) v.findViewById(R.id.noticeText);
         TextView nameText = (TextView) v.findViewById(R.id.nameText);
         TextView dateText = (TextView) v.findViewById(R.id.dateText);

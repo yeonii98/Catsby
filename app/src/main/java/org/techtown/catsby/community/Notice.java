@@ -1,11 +1,13 @@
 package org.techtown.catsby.community;
 
-public class FragmentCommunityNotice {
+public class Notice {
+
     String notice;
     String name;
     String date;
 
-    public FragmentCommunityNotice (String notice, String name, String date) {
+
+    public Notice(String notice, String name, String date) {
         this.notice = notice;
         this.name = name;
         this.date = date;

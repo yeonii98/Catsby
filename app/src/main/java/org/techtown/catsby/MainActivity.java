@@ -2,6 +2,7 @@ package org.techtown.catsby;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
 
         //permission
         AutoPermissions.Companion.loadAllPermissions(this, 101);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
@@ -43,6 +46,22 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true ;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_notice:
+                Intent notificateionIntent = new Intent(this, NotificationActivity.class);
+                startActivity(notificateionIntent);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
         @SuppressLint("NonConstantResourceId")

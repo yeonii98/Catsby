@@ -4,19 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <!-- Activity에서는 fragment로 구현해야되지만
+    Fragment로 구현하기위해서는 MapView를 사용해야함-->
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/googleMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView"
-        android:background="#F0F0F0"/>
-
-
+        class="com.google.android.gms.maps.MapFragment">
+    </com.google.android.gms.maps.MapView>
 </LinearLayout>
