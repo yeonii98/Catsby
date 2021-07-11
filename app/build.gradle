@@ -56,6 +56,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.0.0'
     implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.github.pedroSG94:AutoPermissions:1.0.3'
 
     //qr코드
     implementation fileTree(dir: 'libs', include: ['*.jar'])
