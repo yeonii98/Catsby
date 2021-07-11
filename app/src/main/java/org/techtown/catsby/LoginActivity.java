@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FacebookLoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     // 페이스북 콜백 매니저
     private CallbackManager callbackManager;
     // 파이어베이스 인증 객체 생성
@@ -34,7 +31,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_with_facebook);
+        setContentView(R.layout.activity_login);
 
         //파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
@@ -83,7 +80,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
                         } else {
                             // 로그인 실패
-                            Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
