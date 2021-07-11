@@ -12,7 +12,6 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
 import org.techtown.catsby.R;
-import org.w3c.dom.Text;
 
 public class scannerActivity extends AppCompatActivity {
 
