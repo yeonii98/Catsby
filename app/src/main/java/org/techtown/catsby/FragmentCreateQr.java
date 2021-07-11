@@ -72,9 +72,11 @@ public class FragmentCreateQr extends Fragment {
     // button, bitmap and qrencoder.
     private ImageView qrCodeIV;
     private EditText dataEdt;
+    private EditText dataEdt2;
     private Button generateQrBtn;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
+    String qrinfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,7 @@ public class FragmentCreateQr extends Fragment {
         // initializing all variables.
         qrCodeIV = view.findViewById(R.id.idIVQrcode);
         dataEdt = view.findViewById(R.id.idEdt);
+        dataEdt2 = view.findViewById(R.id.addEdt);
         generateQrBtn = view.findViewById(R.id.idBtnGenerateQR);
 
         // initializing onclick listener for button.
@@ -127,13 +130,16 @@ public class FragmentCreateQr extends Fragment {
 
                     // setting this dimensions inside our qr code
                     // encoder to generate our qr code.
-                    qrgEncoder = new QRGEncoder(dataEdt.getText().toString(), null, QRGContents.Type.TEXT, dimen);
+                    qrinfo = dataEdt2.getText().toString().concat(dataEdt.getText().toString());
+                    qrinfo = dataEdt2.getText().toString().concat("위치의 ".concat(dataEdt.getText().toString()));
+                    qrgEncoder = new QRGEncoder(qrinfo, null, QRGContents.Type.TEXT, dimen);
                     try {
                         // getting our qrcode in the form of bitmap.
                         bitmap = qrgEncoder.encodeAsBitmap();
                         // the bitmap is set inside our image
                         // view using .setimagebitmap method.
                         qrCodeIV.setImageBitmap(bitmap);
+                        Toast.makeText(getActivity(), qrinfo+" 밥그릇 큐알코드가 생성되었습니다.", Toast.LENGTH_SHORT).show();
                     } catch (WriterException e) {
                         // this method is called for
                         // exception handling.

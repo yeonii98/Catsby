@@ -1,44 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_gravity="center_horizontal"
+    tools:context=".FragmentCreateQr"
+    android:orientation="vertical">
 
-    <!--We are using this image
-        view to display our QR code-->
     <ImageView
         android:id="@+id/idIVQrcode"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_margin="20dp"
         android:contentDescription="@string/qr_code" />
 
-    <!--Edit text to enter text
-        for creating a QR code-->
-    <EditText
-        android:id="@+id/idEdt"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="밥그릇 이름 " />
+
+        <EditText
+            android:id="@+id/idEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:autofillHints=""
+            android:hint="@string/enter_your_info" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idIVQrcode"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:autofillHints=""
-        android:hint="@string/enter_your_info"
-        android:inputType="text" />
+        android:orientation="horizontal">
 
-    <!--Button for creating a QR code-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="밥그릇 주소 " />
+
+        <EditText
+            android:id="@+id/addEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:autofillHints=""
+            android:hint="ㅇㅇ(동)                               " />
+
+    </LinearLayout>
+
+
     <Button
         android:id="@+id/idBtnGenerateQR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idEdt"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/generate_qr_code" />
+        android:layout_margin="30dp"
+        android:text="밥그릇 Qr 코드 생성하기" />
 
-</RelativeLayout>
+
+</LinearLayout>

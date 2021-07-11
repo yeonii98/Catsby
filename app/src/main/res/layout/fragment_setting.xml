@@ -122,8 +122,9 @@
 
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             android:text="QR 생성 테스트"
             android:id="@+id/qrcreate" />
     </LinearLayout>
