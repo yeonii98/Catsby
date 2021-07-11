@@ -1,7 +1,11 @@
 package org.techtown.catsby.cattown;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
+import org.techtown.catsby.cattown.addCat.AddCatActivity;
 import org.techtown.catsby.cattown.model.Cat;
 
 import java.util.ArrayList;
@@ -21,7 +26,6 @@ public class FragmentCatTown extends Fragment {
     RecyclerView recyclerView;
     FragmentCatTownAdapter adapter;
     ArrayList<Cat> catList;
-
     private int catpicture;
     private String name;
     private int helppeople;
@@ -29,6 +33,8 @@ public class FragmentCatTown extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cattown, container, false);
+        setHasOptionsMenu(true);
+
         super.onCreate(savedInstanceState);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
@@ -63,11 +69,27 @@ public class FragmentCatTown extends Fragment {
         return view;
     }
 
-    private void addItem(int picture, String catname, int people) {
+    private void addItem(int picture, String catName, int helper) {
         Cat cat = new Cat();
         cat.setCatPicture(picture);
-        cat.setName(catname);
-        cat.setHelpPeople(people);
+        cat.setName(catName);
+        cat.setHelpPeople(helper);
         catList.add(cat);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actionbar_our_cat_town, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_cat:
+                Intent intent = new Intent(getActivity(), AddCatActivity.class);
+                startActivity(intent);
+            default:
+                return super.onOptionsItemSelected(item) ;
+        }
     }
 }

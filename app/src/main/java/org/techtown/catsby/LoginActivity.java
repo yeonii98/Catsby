@@ -1,5 +1,22 @@
 package org.techtown.catsby;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+import com.google.android.gms.common.api.GoogleApiClient;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,21 +34,49 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import org.jetbrains.annotations.NotNull;
 
-public class LoginActivity extends AppCompatActivity {
-    // 페이스북 콜백 매니저
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+    private SignInButton btn_google;
+    private FirebaseAuth auth;
+    private GoogleApiClient googleApiClient;
+    private static final int REQ_SIGN_GOOGLE = 100;
+
     private CallbackManager callbackManager;
     // 파이어베이스 인증 객체 생성
     private FirebaseAuth firebaseAuth;
 
     private LoginButton buttonFacebook;
     private boolean loginSuccess;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .build();
+
+        auth = FirebaseAuth.getInstance();
+        btn_google = findViewById(R.id.btn_google);
+        btn_google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(intent, REQ_SIGN_GOOGLE);
+            }
+        });
 
         //파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
@@ -61,13 +106,52 @@ public class LoginActivity extends AppCompatActivity {
             public void onError(FacebookException error) {
 
             }
+
         });
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQ_SIGN_GOOGLE){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if(result.isSuccess()){
+                GoogleSignInAccount account = result.getSignInAccount();
+                resultLogin(account);
+            }
+        }
+
+
+    }
+
+    private void resultLogin(GoogleSignInAccount account){
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                            startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "로그인 실패",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+
     // 페이스북 로그인 이벤트
-// 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
-// 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
-// Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
+    // 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
+    // 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
+    // Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
     private void handleFacebookAccessToken(AccessToken token) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -87,17 +171,16 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 페이스북 콜백 등록
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 
     //로그인 성공 후 이동할 액티비티
     protected void redirectMainActivity(){
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
+
     }
 }

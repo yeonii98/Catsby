@@ -70,11 +70,15 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
         final Button btn4 = (Button) view.findViewById(R.id.btn4);
         final LinearLayout notice = (LinearLayout) view.findViewById(R.id.notice);
 
-        new BackgroundTask().execute();
         return view;
     }
 
 
+    @Override
+    public void onClick(View view) {
+
+    }
+}
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
         String target;
@@ -108,8 +112,3 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
         }
 
     }
-
-    @Override
-    public void onClick(View v) {
-    }
-}
