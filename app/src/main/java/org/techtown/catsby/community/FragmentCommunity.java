@@ -1,5 +1,6 @@
 package org.techtown.catsby.community;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,11 +74,6 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
-
 
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
@@ -111,5 +107,9 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
             super.onProgressUpdate();
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
     }
 }
