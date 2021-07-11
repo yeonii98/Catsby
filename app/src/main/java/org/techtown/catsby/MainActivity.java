@@ -22,9 +22,6 @@ import org.techtown.catsby.setting.FragmentSetting;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
-
-
-
 public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     private final FragmentHome fragmenthome = new FragmentHome();
