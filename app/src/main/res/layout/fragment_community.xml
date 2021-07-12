@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,24 +78,17 @@
             android:id="@+id/notice">
 
             <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/noticeListView"
-                android:paddingTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="413dp"
                 android:layout_margin="10dp"
+                android:divider="#ffffff"
                 android:dividerHeight="20dp"
-                android:divider="#ffffff">
+                android:paddingTop="5dp">
 
             </ListView>
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment">
-
-        </RelativeLayout>
 
     </FrameLayout>
 

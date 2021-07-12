@@ -5,14 +5,17 @@ buildscript {
     repositories {
         google()
         jcenter()
+        //페이스북 로그인
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.google.gms:google-services:4.3.2'
+
         //kotlin 혼용 추가코드 2
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        //페이스북 로그인
+        classpath 'com.google.gms:google-services:4.3.8'
     }
 }
 
@@ -20,6 +23,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        //페이스북 로그인
+        mavenCentral()
+
+        // 카카오 SDK 레포지토리 설정
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 }
 
