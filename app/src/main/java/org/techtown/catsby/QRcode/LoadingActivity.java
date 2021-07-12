@@ -1,6 +1,7 @@
 package org.techtown.catsby.QRcode;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -31,8 +32,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.techtown.catsby.R;
 
-public class SplashActivity extends AppCompatActivity {
-    private static final String TAG = SplashActivity.class.getSimpleName();
+public class LoadingActivity extends AppCompatActivity {
+    private static final String TAG = LoadingActivity.class.getSimpleName();
     private static final int GPS_UTIL_LOCATION_PERMISSION_REQUEST_CODE = 100;
     private static final int GPS_UTIL_LOCATION_RESOLUTION_REQUEST_CODE = 101;
 
@@ -47,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_loading);
     }
 
     @Override
@@ -67,13 +68,14 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == GPS_UTIL_LOCATION_PERMISSION_REQUEST_CODE) {
             for (int i = 0; i < permissions.length; i++) {
                 if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permissions[i])) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         checkLocationSetting();
                     } else {
-                        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("위치 권한이 꺼져있습니다.");
                         builder.setMessage("[권한] 설정에서 위치 권한을 허용해야 합니다.");
                         builder.setPositiveButton("설정으로 가기", new DialogInterface.OnClickListener() {
@@ -91,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-                        androidx.appcompat.app.AlertDialog alert = builder.create();
+                        AlertDialog alert = builder.create();
                         alert.show();
                     }
                     break;
@@ -112,11 +114,11 @@ public class SplashActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SplashActivity.this);
+                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(LoadingActivity.this);
                         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
                     }
                 })
-                .addOnFailureListener(SplashActivity.this, new OnFailureListener() {
+                .addOnFailureListener(LoadingActivity.this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         int statusCode = ((ApiException) e).getStatusCode();
@@ -124,7 +126,7 @@ public class SplashActivity extends AppCompatActivity {
                             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                                 try {
                                     ResolvableApiException rae = (ResolvableApiException) e;
-                                    rae.startResolutionForResult(SplashActivity.this, GPS_UTIL_LOCATION_RESOLUTION_REQUEST_CODE);
+                                    rae.startResolutionForResult(LoadingActivity.this, GPS_UTIL_LOCATION_RESOLUTION_REQUEST_CODE);
                                 } catch (IntentSender.SendIntentException sie) {
                                     Log.w(TAG, "unable to start resolution for result due to " + sie.getLocalizedMessage());
                                 }
@@ -158,7 +160,7 @@ public class SplashActivity extends AppCompatActivity {
             latitude = locationResult.getLastLocation().getLatitude();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-            Intent intent = new Intent(SplashActivity.this, qrcodeActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, qrcodeActivity.class);
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
             startActivity(intent);

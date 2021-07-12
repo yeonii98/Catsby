@@ -41,7 +41,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".QRcode.qrcodeActivity"></activity>
-        <activity android:name=".QRcode.SplashActivity" />
+        <activity android:name=".QRcode.LoadingActivity" />
         <activity android:name=".QRcode.scannerActivity" />
 
         <uses-library
