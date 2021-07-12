@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
+import kotlinx.android.synthetic.main.fragment_setting.*
+import org.techtown.catsby.FragmentCreateQr
 import org.techtown.catsby.R
 import java.lang.Exception
 
@@ -99,6 +101,9 @@ class FragmentSetting : Fragment() {
             //setFrag(2)
             replaceFragment(com.example.catsbe.writingList())
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
+        }
+        qrcreate.setOnClickListener{
+            replaceFragment(FragmentCreateQr())
         }
 
         //프로필 이미지 버튼 클릭 시 (프로필 사진 변경)

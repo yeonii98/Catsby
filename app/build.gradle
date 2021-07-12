@@ -69,6 +69,9 @@ dependencies {
     //kotlin 혼용 추가코드 4
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    //qr
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
     //googlemap
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
@@ -107,3 +110,6 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+}
+
