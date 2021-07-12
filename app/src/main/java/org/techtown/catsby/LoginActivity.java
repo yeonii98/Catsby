@@ -96,8 +96,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         buttonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-                redirectMainActivity();
+                signInWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
             }
 
             @Override
@@ -135,13 +134,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if(result.isSuccess()){
                 GoogleSignInAccount account = result.getSignInAccount();
-                resultLogin(account);
+                signInWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null));
             }
         }
     }
 
-    private void resultLogin(GoogleSignInAccount account){
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+    // 페이스북, 구글 로그인 이벤트
+    // 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
+    // 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
+    // Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
+    private void signInWithCredential(AuthCredential credential) {
+
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -149,35 +152,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
                             startActivity(intent);
                         }
                         else{
                             Toast.makeText(LoginActivity.this, "로그인 실패",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
-
-    // 페이스북 로그인 이벤트
-    // 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
-    // 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
-    // Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
-    private void handleFacebookAccessToken(AccessToken token) {
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // 로그인 성공
-
-                        } else {
-                            // 로그인 실패
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -200,13 +178,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     }
                 });
-    }
-
-    //로그인 성공 후 이동할 액티비티
-    protected void redirectMainActivity(){
-        final Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
