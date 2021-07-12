@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.techtown.catsby">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -65,13 +66,20 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
+            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I"
+            />
 
         <activity android:name=".notification.NotificationActivity" />
         <activity android:name=".cattown.CatTownDetailActivity" />
         <activity
             android:name=".cattown.addCat.AddCatActivity"
-            android:parentActivityName=".MainActivity" /> <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> -->
+            android:parentActivityName=".MainActivity" />
+
+        <!--페이스북 로그인 관련 -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value"/>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
