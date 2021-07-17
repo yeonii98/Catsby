@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Catsby</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- Facebook Login -->
-    <string name="facebook_app_id">332769395001957</string>
-    <string name="fb_login_protocol_scheme">fb332769395001957</string>
-    <string name="kakao_native_app_key">ecd9b3518a847a378f835dc6d5b39238</string>
-</resources>
