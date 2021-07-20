@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
 import kotlinx.android.synthetic.main.fragment_setting.*
 import org.techtown.catsby.FragmentCreateQr
+import org.techtown.catsby.QRcode.LoadingActivity
 import org.techtown.catsby.R
-import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,6 +64,7 @@ class FragmentSetting : Fragment() {
     var txtadd: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         imageButton = view.findViewById<ImageButton>(R.id.imageButton)
@@ -86,7 +87,6 @@ class FragmentSetting : Fragment() {
             }
         }
 
-
         alertManage.setOnClickListener {
             //setFrag(0)
             replaceFragment(alert())
@@ -105,6 +105,11 @@ class FragmentSetting : Fragment() {
         qrcreate.setOnClickListener{
             replaceFragment(FragmentCreateQr())
         }
+
+        qrscantest.setOnClickListener(View.OnClickListener {
+            val intent = Intent(activity, LoadingActivity::class.java)
+            startActivity(intent)
+        })
 
         //프로필 이미지 버튼 클릭 시 (프로필 사진 변경)
         imageButton.setOnClickListener {
@@ -127,6 +132,8 @@ class FragmentSetting : Fragment() {
                 editNickName.setVisibility(View.GONE)
                 editButton.setText("수정")
             }
+
+
         }
 
     }
@@ -138,6 +145,8 @@ class FragmentSetting : Fragment() {
 
         return inflater.inflate(R.layout.fragment_setting, container, false)
     }
+
+
 
     private fun replaceFragment(fragment: Fragment){
         val fragmentTransaction: FragmentTransaction = requireFragmentManager().beginTransaction()
