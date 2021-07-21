@@ -1,5 +1,6 @@
 package com.hanium.catsby.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,11 +37,13 @@ public class TownCommunity {
     private Timestamp date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "town_community", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
-    private List<TownComment> town_comment;
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
+    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
+    @OrderBy("id desc")
+    private List<TownComment> townComment;
 
     //하나의 게시글에 여러개의 좋아요가 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "town_community", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
-    private List<TownLike> town_like;
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
+    private List<TownLike> townlike;
 
 }

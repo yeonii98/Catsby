@@ -26,7 +26,7 @@ public class TownComment {
 
     @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "town_community_id")//town_community_id라는 컬럼이 만들어짐
-    private TownCommunity town_community;
+    private TownCommunity townCommunity;
 
     private String content;
 
