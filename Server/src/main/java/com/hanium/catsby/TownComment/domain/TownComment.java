@@ -35,6 +35,14 @@ public class TownComment {
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private com.hanium.catsby.domain.TownCommunity townCommunity;
 
+    private TownCommunity town_community;
+
+    private TownCommunity townCommunity;
+
+
+    @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
+    private TownCommunity townCommunity;
+
     private String content;
 
     //    @CreationTimestamp//insert시 시간 자동 저장
