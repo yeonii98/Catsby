@@ -26,19 +26,18 @@ public class TownComment {
     private User user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
-<<<<<<< HEAD
+
     @JoinColumn(name = "town_community_id")//town_community_id라는 컬럼이 만들어짐
 
-    private TownCommunity town_community;
+    private com.hanium.catsby.domain.TownCommunity town_community;
 
-=======
+
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
->>>>>>> parent of 3359397 (Revert "TownAPi")
-    private TownCommunity townCommunity;
+    private com.hanium.catsby.domain.TownCommunity townCommunity;
 
     private String content;
 
-//    @CreationTimestamp//insert시 시간 자동 저장
+    //    @CreationTimestamp//insert시 시간 자동 저장
     private String date;
 
     private String created_time;

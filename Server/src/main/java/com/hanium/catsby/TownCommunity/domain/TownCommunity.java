@@ -26,14 +26,14 @@ public class TownCommunity {
     @JoinColumn(name = "user_id")//use_id라는 컬럼이 만들어짐
     private User user;
 
-//    @Lob//대용량 데이터
+    //    @Lob//대용량 데이터
     private String image;
 
     private String content;
 
     private String title;
 
-//    @CreationTimestamp//insert시 시간 자동 저장
+    //    @CreationTimestamp//insert시 시간 자동 저장
     private String date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
@@ -53,11 +53,9 @@ public class TownCommunity {
     @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
     private List<TownLike> townlike;
 
-<<<<<<< HEAD
-=======
+
     private String created_time;
 
     private String updated_time;
->>>>>>> parent of 3359397 (Revert "TownAPi")
 
 }
