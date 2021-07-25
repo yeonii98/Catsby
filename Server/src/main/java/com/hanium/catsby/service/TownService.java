@@ -1,5 +1,6 @@
 package com.hanium.catsby.service;
 
+import com.hanium.catsby.domain.TownComment;
 import com.hanium.catsby.domain.TownCommunity;
 import com.hanium.catsby.domain.TownLike;
 import com.hanium.catsby.domain.User;
@@ -8,6 +9,9 @@ import com.hanium.catsby.repository.TownLikeRepository;
 import com.hanium.catsby.repository.TownRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,13 +47,22 @@ public class TownService {
     public void writeTownCommunity(TownCommunity townCommunity) {//글 쓰기
 //        townCommunity.setUser(user);
         townCommunity.setDate(currentTime());
+
+    @Autowired
+    TownCommentRepository townCommentRepository;
+
+    @Transactional
+    public void writeTownCommunity(TownCommunity townCommunity) {//글 쓰기
+//        townCommunity.setUser(user);
         townRepository.save(townCommunity);
     }
 
-    public Page<TownCommunity> listTownCommunity(Pageable pageable){//글 목록
-        return townRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    public List listTownCommunity(){//글 목록
+        return townRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public TownCommunity retrieveTownCommunity(int id) {//글 조회
         return townRepository.findById(id)
                 .orElseThrow(()->{
@@ -57,10 +70,12 @@ public class TownService {
                 });
     }
 
+    @Transactional
     public void deleteTownCommunity(int id) {//글 삭제
         townRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateTownCommunity(int id, TownCommunity requestTownCommunity) {//글 수정
         TownCommunity townCommunity = townRepository.findById(id)
                 .orElseThrow(()->{
@@ -68,6 +83,7 @@ public class TownService {
                 }); //영속화 완료
         townCommunity.setTitle(requestTownCommunity.getTitle());
         townCommunity.setContent(requestTownCommunity.getContent());
+        System.out.println(townCommunity);
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
     }
 
