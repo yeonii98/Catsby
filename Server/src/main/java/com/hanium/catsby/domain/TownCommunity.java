@@ -16,13 +16,14 @@ import java.util.List;
 @AllArgsConstructor //전체 생성자
 @Builder
 @Entity
+@Table(name = "Town_Community")
 public class TownCommunity {
 
     @Id //PK지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int townCommunity_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//use_id라는 컬럼이 만들어짐
     private User user;
 
@@ -33,17 +34,20 @@ public class TownCommunity {
 
     private String title;
 
-    @CreationTimestamp//insert시 시간 자동 저장
-    private Timestamp date;
+//    @CreationTimestamp//insert시 시간 자동 저장
+    private String date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
     @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    @OrderBy("id desc")
     private List<TownComment> townComment;
 
     //하나의 게시글에 여러개의 좋아요가 존재한다. 1:N 관계 -> OneToMany
     @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY) //mappedBy : 난 연관관계의 주인이 아니다 (난 FK가 아니에요) DB에 칼럼을 만들지 마세요.
     private List<TownLike> townlike;
+
+    private String created_time;
+
+    private String updated_time;
 
 }
