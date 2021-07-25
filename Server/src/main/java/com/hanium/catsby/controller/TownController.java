@@ -2,7 +2,6 @@ package com.hanium.catsby.controller;
 
 import com.hanium.catsby.domain.TownComment;
 import com.hanium.catsby.domain.TownCommunity;
-import com.hanium.catsby.domain.TownLike;
 import com.hanium.catsby.domain.User;
 import com.hanium.catsby.repository.TownCommentRepository;
 import com.hanium.catsby.service.TownService;
@@ -26,9 +25,9 @@ public class TownController {
         return townService.listTownCommunity();
     }
 
-    @GetMapping("/townCommunity/{townCommunity_id}")
-    public TownCommunity retrieveTown(@PathVariable int townCommunity_id) {
-        return townService.retrieveTownCommunity(townCommunity_id);
+    @GetMapping("/townCommunity/{id}")
+    public TownCommunity retrieveTown(@PathVariable int id) {
+        return townService.retrieveTownCommunity(id);
     }
 
     @PostMapping("townCommunity/write")
@@ -37,40 +36,28 @@ public class TownController {
         return "글 쓰기";
     }
 
-    @DeleteMapping("townCommunity/{townCommunity_id}")
-    public String deleteTown(@PathVariable int townCommunity_id){
-        townService.deleteTownCommunity(townCommunity_id);
+    @DeleteMapping("townCommunity/{id}")
+    public String deleteTown(@PathVariable int id){
+        townService.deleteTownCommunity(id);
         return "글 삭제하기";
     }
 
-    @PutMapping("townCommunity/{townCommunity_id}")
-    public String updateTown(@PathVariable int townCommunity_id, @RequestBody TownCommunity townCommunity){
-        townService.updateTownCommunity(townCommunity_id,townCommunity);
+    @PutMapping("townCommunity/{id}")
+    public String updateTown(@PathVariable int id, @RequestBody TownCommunity townCommunity){
+        townService.updateTownCommunity(id,townCommunity);
         return "글 수정하기";
     }
 
-    @PostMapping("townCommunity/{townCommunity_id}/comment")
-    public String writeTownComment(@PathVariable int townCommunity_id, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
-        townService.writeTownComment(townCommunity_id, townComment);
+    @PostMapping("townCommunity/{id}/comment")
+    public String writeTownComment(@PathVariable int id, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
+        townService.writeTownComment(id, townComment);
         return "댓글 쓰기";
     }
 
-    @DeleteMapping("townCommunity/{townCommunity_id}/comment/{townComment_id}")
-    public String deleteTownComment(@PathVariable int townComment_id){
-        townService.deleteTownComment(townComment_id);
+    @DeleteMapping("townCommunity/{id}/comment/{commentId}")
+    public String deleteTownComment(@PathVariable int commentId){
+        townService.deleteTownComment(commentId);
         return "댓글 삭제하기";
-    }
-
-    @PostMapping("townCommunity/{townCommunity_id}/like")
-    public String createTownLike(@PathVariable int townCommunity_id, @RequestBody TownLike townLike){//현재 유저의 정보도 넣어야 함
-        townService.createTownLike(townCommunity_id, townLike);
-        return "좋아요";
-    }
-
-    @DeleteMapping("townCommunity/{townCommunity_id}/like/{townLike_id}")
-    public String deleteTownLike(@PathVariable int townLike_id){
-        townService.deleteTownLike(townLike_id);
-        return "좋아요 취소";
     }
 
 }
