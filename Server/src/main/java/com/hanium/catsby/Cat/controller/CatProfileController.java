@@ -1,17 +1,12 @@
-package com.hanium.catsby.CatController;
+package com.hanium.catsby.Cat.controller;
 
-import com.hanium.catsby.CatMapper.CatProfileMapper;
-import com.hanium.catsby.CatModel.CatProfile;
+import com.hanium.catsby.Cat.mapper.CatProfileMapper;
+import com.hanium.catsby.Cat.model.CatProfile;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.awt.*;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CatProfileController {
@@ -49,7 +44,6 @@ public class CatProfileController {
         return mapper.getCatProfile(cat_id);
     }
 
-    //고양이 등록 수정 안됨 이유 찾기
     //고양이 등록
     @PutMapping("/cat/register")
     public void putCatProfile(@RequestParam("cat_id") int cat_id,

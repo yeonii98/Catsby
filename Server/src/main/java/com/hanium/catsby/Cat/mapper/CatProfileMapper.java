@@ -1,11 +1,8 @@
-package com.hanium.catsby.CatMapper;
+package com.hanium.catsby.Cat.mapper;
 
-import com.hanium.catsby.CatModel.CatProfile;
+import com.hanium.catsby.Cat.model.CatProfile;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.awt.*;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.List;

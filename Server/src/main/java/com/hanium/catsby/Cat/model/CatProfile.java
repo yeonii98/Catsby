@@ -1,4 +1,4 @@
-package com.hanium.catsby.CatModel;
+package com.hanium.catsby.Cat.model;
 
 import java.awt.*;
 import java.sql.Blob;
