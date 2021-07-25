@@ -24,14 +24,12 @@ public class TownLike {
     private User user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
-<<<<<<< HEAD
     @JoinColumn(name = "town_community_id")//town_community_id_Id라는 컬럼이 만들어짐
 
     private TownCommunity town_community;
 
-=======
+    private TownCommunity townCommunity;
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
->>>>>>> parent of 3359397 (Revert "TownAPi")
     private TownCommunity townCommunity;
 
     private String created_time;
