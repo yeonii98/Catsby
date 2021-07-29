@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+/*
+        FragmentCommunity fragment1 = new FragmentCommunity();
+        transaction.replace(R.id.frameLayout, fragment1);
+        transaction.commit(); //저장 */
     }
 
     @Override

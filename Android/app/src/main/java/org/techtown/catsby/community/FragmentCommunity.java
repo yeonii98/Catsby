@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,18 +33,41 @@ import java.util.List;
 
 public class FragmentCommunity extends Fragment implements View.OnClickListener {
 
-    private ListView noticeListView;
-    private FragmentActivity myContext;
+    private View view;
+    private TextView tv_frag1;
+    private ImageButton btn_move;
+    private String result;
 
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_community, container, false);
-        super.onCreate(savedInstanceState);
+        view = inflater.inflate(R.layout.fragment_community, container, false);
+
+        tv_frag1 = view.findViewById(R.id.tv_frag1);
+        btn_move = view.findViewById(R.id.btn_move);
+
+        if (getArguments() != null) {
+            result = getArguments().getString("fromFrag2");
+            tv_frag1.setText(result);
+        }
+
+        btn_move.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("fromFrag1", ".");
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentPost fragment2 = new FragmentPost();
+                fragment2.setArguments(bundle);
+                transaction.replace(R.id.frameLayout, fragment2);
+                transaction.commit(); //저장
+
+            }
+        });
 
         SearchView searchView = view.findViewById(R.id.search_view);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -55,10 +80,6 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
             }
         });
 
-
-
-        final LinearLayout notice = (LinearLayout) view.findViewById(R.id.notice);
-
         return view;
     }
 
@@ -68,36 +89,3 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
 
     }
 }
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
-        String target;
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try{
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp=bufferedReader.readLine())!=null)
-                {
-                    stringBuilder.append(temp+"\n");
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values){
-            super.onProgressUpdate();
-        }
-
-    }

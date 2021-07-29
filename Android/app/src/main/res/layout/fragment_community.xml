@@ -40,18 +40,23 @@
 
             </ListView>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/main_post_edit"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_frag1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_baseline_create_24" />
+                android:text="."
+                android:textColor="@android:color/white"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_move"
+                android:layout_width="99dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_create_24" />
 
 
         </LinearLayout>
+
 
     </FrameLayout>
 
