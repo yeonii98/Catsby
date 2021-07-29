@@ -19,54 +19,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/search_view"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="1dp"
-        android:layout_marginRight="8dp">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn2"
-            android:text="#츄르추천"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn3"
-            android:text="#동물병원"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn4"
-            android:text="#고양이사료"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="16dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
-
-    </LinearLayout>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -87,6 +39,17 @@
                 android:paddingTop="5dp">
 
             </ListView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/main_post_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_baseline_create_24" />
+
 
         </LinearLayout>
 
