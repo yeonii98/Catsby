@@ -1,8 +1,9 @@
 package com.hanium.catsby.BowlCommunity.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.Bowl.domain.Bowl;
-import com.hanium.catsby.BowlComment.domain.BowlComment;
-import com.hanium.catsby.BowlLike.domain.BowlLike;
+import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,16 +14,17 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@Table(name = "Bowl_Community")
 public class BowlCommunity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bowl_community_id")
+    @Column(name = "bowlCommunity_id")
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "user_id")
-    //private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_id")
@@ -34,24 +36,36 @@ public class BowlCommunity {
     @Lob
     private String content;
 
-    private LocalDateTime uploadDate;
+    @Column(name = "created_time")
+    private LocalDateTime createDate;
+
+    @Column(name = "updated_time")
+    private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"bowlCommunity"})
     private List<BowlComment> bowlComments = new ArrayList<>();
 
-    public void setBowl(Bowl bowl) {
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private BowlLike bowlLike;
+
+    public void setUser(Users user){
+        this.user = user;
+        user.getBowlCommunities().add(this);
+    }
+
+    public void setBowl(Bowl bowl){
         this.bowl = bowl;
         bowl.getBowlCommunities().add(this);
     }
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bowl_like_id")
-    private BowlLike bowlLike;
-
-    public void setBowlLike(BowlLike bowlLike) {
-        this.bowlLike = bowlLike;
-        bowlLike.setBowlCommunity(this);
+    public void setCreateDate(){
+        this.createDate = LocalDateTime.now();
     }
 
-
+    public void setUpdateDate(){
+        this.updateDate = LocalDateTime.now();
+    }
 }
