@@ -44,16 +44,13 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
-/*
-        FragmentCommunity fragment1 = new FragmentCommunity();
-        transaction.replace(R.id.frameLayout, fragment1);
-        transaction.commit(); //저장 */
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true ;
+        getMenuInflater().inflate(R.menu.actionbar_write, menu);
+        return true;
     }
 
     @Override
@@ -62,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             case R.id.action_notice:
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
+
+                case R.id.action_write:
+                Intent writemainIntent = new Intent(this, activity_writemain.class);
+                startActivity(writemainIntent);
+
             default:
                 return super.onOptionsItemSelected(item);
         }

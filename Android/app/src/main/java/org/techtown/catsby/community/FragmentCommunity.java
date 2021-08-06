@@ -49,10 +49,12 @@ public class FragmentCommunity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         view = inflater.inflate(R.layout.fragment_community, container, false);
 
         memoList = new ArrayList<>();
+
         recyclerView = view.findViewById(R.id.recyclerview);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -63,6 +65,12 @@ public class FragmentCommunity extends Fragment {
 
         //새로운 메모 작성
         btn_move = view.findViewById(R.id.btn_move);
+
+
+
+
+
+
         btn_move.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,32 +79,17 @@ public class FragmentCommunity extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 FragmentPost fragment2 = new FragmentPost();
                 fragment2.setArguments(bundle);
-                transaction.replace(R.id.frameLayout, fragment2);
-                transaction.commit();
+                transaction.replace(R.id.frameLayout, fragment2); //startActivity()랑 비슷함
+                transaction.commit();   //저장
             }
         });
 
         tv_frag1 = view.findViewById(R.id.tv_frag1);
-        btn_move = view.findViewById(R.id.btn_move);
 
         if (getArguments() != null) {
             result = getArguments().getString("fromFrag2");
             tv_frag1.setText(result);
         }
-
-        btn_move.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("fromFrag1", ".");
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                FragmentPost fragment2 = new FragmentPost();
-                fragment2.setArguments(bundle);
-                transaction.replace(R.id.frameLayout, fragment2);
-                transaction.commit(); //저장
-
-            }
-        });
 
         //검색
         SearchView searchView = view.findViewById(R.id.search_view);
