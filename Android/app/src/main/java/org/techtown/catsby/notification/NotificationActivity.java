@@ -51,11 +51,8 @@ public class NotificationActivity extends AppCompatActivity {
             dataList.add(new NotificationItemData(cat[i], "@냐옹님이 회원님의 게시글을 좋아합니다.",
                     String.format("%d분 전", i)));
         }
-
         recyclerView.setAdapter(adapter);
-
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -71,5 +68,4 @@ public class NotificationActivity extends AppCompatActivity {
 //        getMenuInflater().inflate(R.menu.menu,menu);
 //        return true;
 //    }
-
 }

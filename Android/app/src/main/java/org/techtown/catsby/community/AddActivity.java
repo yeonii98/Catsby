@@ -1,9 +1,11 @@
 package org.techtown.catsby.community;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +26,13 @@ public class AddActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.edtMemo);
 
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
         findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,20 +50,11 @@ public class AddActivity extends AppCompatActivity {
                     setResult(0, intent);
 
                     finish();
-
-
-                    //Toast.makeText(AddActivity.this, str+","+substr, Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
-        findViewById(R.id.btnNo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
 
-            }
-        });
     }
 }
