@@ -31,8 +31,6 @@ public class AddActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +52,5 @@ public class AddActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 }
