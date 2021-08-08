@@ -15,13 +15,6 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/btn_move"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
-
         <EditText
             android:id="@+id/tv_frag2"
             android:layout_width="0dp"

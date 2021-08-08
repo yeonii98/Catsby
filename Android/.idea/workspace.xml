@@ -14,18 +14,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a25dcb4d-d55e-4080-b75d-1865e8a67d3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/activity_writemain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_writemain.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/menu/actionbar_write.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentCommunity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentCommunity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_create_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_create_24.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_notification.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_notification.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_post.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_post.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/toolbar_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/toolbar_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_writemain.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_writemain.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_community.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_community.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +83,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../20210213" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -187,22 +180,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="904" y="272" key="AndroidCreateResourceFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1628255608316" />
-    <state width="868" height="239" key="GridCell.Tab.0.bottom" timestamp="1628254677589">
+    <state x="1046" y="273" key="FileChooserDialogImpl" timestamp="1628257284191">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1628254677589" />
-    <state width="868" height="239" key="GridCell.Tab.0.center" timestamp="1628254677589">
+    <state x="1046" y="273" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1628257284191" />
+    <state width="867" height="239" key="GridCell.Tab.0.bottom" timestamp="1628260593896">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1628254677589" />
-    <state width="868" height="239" key="GridCell.Tab.0.left" timestamp="1628254677589">
+    <state width="867" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1628260593896" />
+    <state width="867" height="239" key="GridCell.Tab.0.center" timestamp="1628260593896">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1628254677589" />
-    <state width="868" height="239" key="GridCell.Tab.0.right" timestamp="1628254677589">
+    <state width="867" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1628260593896" />
+    <state width="867" height="239" key="GridCell.Tab.0.left" timestamp="1628260593896">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="868" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1628254677589" />
+    <state width="867" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1628260593896" />
+    <state width="867" height="239" key="GridCell.Tab.0.right" timestamp="1628260593896">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="867" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1628260593896" />
     <state x="912" y="261" width="672" height="678" key="search.everywhere.popup" timestamp="1627561340335">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
