@@ -14,11 +14,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a25dcb4d-d55e-4080-b75d-1865e8a67d3b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/AddActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_writemain.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_writemain.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/activity_writemain.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/activity_writemain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentCommunity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentCommunity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/techtown/catsby/community/FragmentPost.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_community.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_community.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_post.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +95,9 @@
   <component name="RecentsManager">
     <key name="android.template.1602659770">
       <recent name="org.techtown.catsby" />
+    </key>
+    <key name="android.template.-1526812481">
+      <recent name="org.techtown.catsby.community" />
     </key>
   </component>
   <component name="RunManager">
@@ -172,10 +179,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="979" y="281" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1627576934667">
+    <state x="979" y="281" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1628398667484">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="979" y="281" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1627576934667" />
+    <state x="979" y="281" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1628398667484" />
     <state x="904" y="272" key="AndroidCreateResourceFileDialog" timestamp="1628255608316">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

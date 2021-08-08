@@ -37,8 +37,7 @@ import java.util.List;
 public class FragmentCommunity extends Fragment {
 
     private View view;
-    private TextView tv_frag1;
-    private Button btn_move;
+    private Button btnAdd;
     private String result;
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -64,32 +63,14 @@ public class FragmentCommunity extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         //새로운 메모 작성
-        btn_move = view.findViewById(R.id.btn_move);
-
-
-
-
-
-
-        btn_move.setOnClickListener(new View.OnClickListener() {
+        btnAdd = view.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("fromFrag1", ".");
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                FragmentPost fragment2 = new FragmentPost();
-                fragment2.setArguments(bundle);
-                transaction.replace(R.id.frameLayout, fragment2); //startActivity()랑 비슷함
-                transaction.commit();   //저장
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
-
-        tv_frag1 = view.findViewById(R.id.tv_frag1);
-
-        if (getArguments() != null) {
-            result = getArguments().getString("fromFrag2");
-            tv_frag1.setText(result);
-        }
 
         //검색
         SearchView searchView = view.findViewById(R.id.search_view);
@@ -106,6 +87,20 @@ public class FragmentCommunity extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 0){
+            String strMain = data.getStringExtra("main");
+            String strSub = data.getStringExtra("sub");
+
+            Memo memo = new Memo(strMain, strSub, 0);
+            recyclerAdapter.addItem(memo);
+            recyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {

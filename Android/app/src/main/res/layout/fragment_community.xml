@@ -26,15 +26,8 @@
 
     </ScrollView>
 
-    <TextView
-        android:id="@+id/tv_frag1"
-        android:layout_width="10dp"
-        android:layout_height="wrap_content"
-        android:text="."
-        android:textColor="@android:color/white"/>
-
     <Button
-        android:id="@+id/btn_move"
+        android:id="@+id/btnAdd"
         android:text="글쓰기"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

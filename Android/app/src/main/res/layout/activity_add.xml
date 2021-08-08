@@ -16,14 +16,14 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/btn_move"
+            android:id="@+id/btnNo"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_weight="0"
             app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
         <EditText
-            android:id="@+id/tv_frag2"
+            android:id="@+id/edtMemo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
