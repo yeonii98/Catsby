@@ -1,15 +1,18 @@
 package org.techtown.catsby.community;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.catsby.R;
 
@@ -29,22 +34,46 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentCommunity extends Fragment implements View.OnClickListener {
+public class FragmentCommunity extends Fragment {
 
-    private ListView noticeListView;
-    private NoticeListAdapter adapter;
-    private List<Notice> noticeList;
-    private FragmentActivity myContext;
+    private View view;
+    private Button btnAdd;
+    private String result;
+    private RecyclerView recyclerView;
+    private RecyclerAdapter recyclerAdapter;
 
+    List<Memo> memoList;
+
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_community, container, false);
         super.onCreate(savedInstanceState);
 
-        SearchView searchView = view.findViewById(R.id.search_view);
+        view = inflater.inflate(R.layout.fragment_community, container, false);
 
+        memoList = new ArrayList<>();
+
+        recyclerView = view.findViewById(R.id.recyclerview);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerAdapter = new RecyclerAdapter(memoList);
+        recyclerView.setAdapter(recyclerAdapter);
+
+        //새로운 메모 작성
+        btnAdd = view.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        //검색
+        SearchView searchView = view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -57,58 +86,79 @@ public class FragmentCommunity extends Fragment implements View.OnClickListener 
             }
         });
 
-        noticeListView = (ListView) view.findViewById(R.id.noticeListView);
-        noticeList = new ArrayList<Notice>();
-        noticeList.add(new Notice("고양이가 아픈데 병원 추천 부탁드려요ㅠㅠ", "익명", "2021-04-05"));
-        noticeList.add(new Notice("냥이 츄르 같이 사실 분 계신가요~?", "연지니", "2021-04-03"));
-        noticeList.add(new Notice("(사진)", "냥집사", "2021-04-02"));
-        adapter = new NoticeListAdapter(getActivity().getApplicationContext(), noticeList);
-        noticeListView.setAdapter(adapter);
-
-        final Button btn2 = (Button) view.findViewById(R.id.btn2);
-        final Button btn3 = (Button) view.findViewById(R.id.btn3);
-        final Button btn4 = (Button) view.findViewById(R.id.btn4);
-        final LinearLayout notice = (LinearLayout) view.findViewById(R.id.notice);
-
         return view;
     }
 
-
     @Override
-    public void onClick(View view) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == 0){
+            String strMain = data.getStringExtra("main");
+            String strSub = data.getStringExtra("sub");
+
+            Memo memo = new Memo(strMain, strSub, 0);
+            recyclerAdapter.addItem(memo);
+            recyclerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
+
+        private List<Memo> listdata;
+
+        public RecyclerAdapter(List<Memo> listdata) {
+            this.listdata = listdata;
+        }
+
+
+        @NonNull
+        @Override
+        public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item,
+                    viewGroup, false);
+            return new ItemViewHolder(view);
+        }
+
+        @Override
+        public int getItemCount() {
+            return listdata.size();
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
+            Memo memo = listdata.get(i);
+
+            itemViewHolder.maintext.setText(memo.getMaintext());
+            itemViewHolder.subtext.setText(memo.getSubtext());
+
+            if (memo.getIsdone() == 0) {
+                itemViewHolder.img.setBackgroundColor(Color.LTGRAY);
+            } else {
+                itemViewHolder.img.setBackgroundColor(Color.GREEN);
+            }
+        }
+
+        void addItem(Memo memo) {
+            listdata.add(memo);
+        }
+
+        void removeItem(int position) {
+            listdata.remove(position);
+        }
+
+        class ItemViewHolder extends RecyclerView.ViewHolder {
+            private TextView maintext;
+            private TextView subtext;
+            private ImageView img;
+
+            public ItemViewHolder(@NonNull View itemView) {
+                super(itemView);
+
+                maintext = itemView.findViewById(R.id.item_maintext);
+                subtext = itemView.findViewById(R.id.item_subtext);
+                img = itemView.findViewById(R.id.item_image);
+            }
+        }
     }
 }
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
-        String target;
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try{
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp=bufferedReader.readLine())!=null)
-                {
-                    stringBuilder.append(temp+"\n");
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values){
-            super.onProgressUpdate();
-        }
-
-    }
