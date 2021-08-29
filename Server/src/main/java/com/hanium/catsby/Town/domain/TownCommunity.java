@@ -1,16 +1,19 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hanium.catsby.town.domain.TownComment;
+import com.hanium.catsby.town.domain.TownLike;
+import com.hanium.catsby.user.domain.MyPost;
+import com.hanium.catsby.util.BaseTimeEntity;
+import com.hanium.catsby.user.domain.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.hanium.catsby.Town.User.domain.User;
-import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.sql.Blob;
 import java.util.List;
 
 @Data
@@ -19,7 +22,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "Town_Community")
-public class TownCommunity {
+public class TownCommunity extends BaseTimeEntity {
 
     @Id //PK지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,17 +44,14 @@ public class TownCommunity {
     private String date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)//연관관계의 주인이 아니다.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    @OrderBy("id desc")
+    //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    private TownLike townlike;
+//    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)
+//    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
+//    private List<TownLike> townLike;
 
-    private String created_time;
-
-    private String updated_time;
-
+    private boolean anonymous;
 }

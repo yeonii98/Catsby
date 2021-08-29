@@ -15,10 +15,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long savaUser(Users user) {
-        user.setCreateDate();
+    public void savaUser(String uid, String email, String fcmToken) {
+        Users user = new Users();
+        user.setUid(uid);
+        user.setNickname(email.split("@")[0]);
+        user.setFcmToken(fcmToken);
         userRepository.save(user);
-        return user.getId();
     }
 
     @Transactional(readOnly = true)
@@ -32,17 +34,35 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, String nickname, String address) {
-        Users user = userRepository.findUser(id);
-        user.setUpdateDate();
-        user.setNickname(nickname);
+    public void updateAddress(String uid, String address) {
+        Users user = userRepository.findUserByUid(uid);
         user.setAddress(address);
     }
 
     @Transactional
-    public void updateFcmToken(Long id, String token) {
-        Users user = userRepository.findUser(id);
+    public void updateNickname(String uid, String nickname) {
+        Users user = userRepository.findUserByUid(uid);
+        user.setNickname(nickname);
+    }
+
+    @Transactional(readOnly = true)
+    public Long findUserByUid(String uid){
+        Users user = userRepository.findUserByUid(uid);
+        return user.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Users findUsersByUid(String uid){
+        Users user = userRepository.findUserByUid(uid);
+        return user;
+    }
+
+    @Transactional
+    public void updateFcmToken(String uid, String token) {
+        Users user = userRepository.findUserByUid(uid);
         user.setFcmToken(token);
     }
+
+
 }
 

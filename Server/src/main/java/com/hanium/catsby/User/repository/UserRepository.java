@@ -1,6 +1,6 @@
-package com.hanium.catsby.User.repository;
+package com.hanium.catsby.user.repository;
 
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.user.domain.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +19,18 @@ public class UserRepository {
 
     public Users findUser(Long id) {
         return em.find(Users.class, id);
+    }
+
+    public Users findUserByUid(String uid) {
+        return em.createQuery("select u from Users u where u.uid = :uid", Users.class)
+                .setParameter("uid", uid)
+                .getSingleResult();
+    }
+
+    public List<Users> findUserToChkByUid(String uid) {
+        return em.createQuery("select u from Users u where u.uid = :uid", Users.class)
+                .setParameter("uid", uid)
+                .getResultList();
     }
 
     public List<Users> findAllUser() {
