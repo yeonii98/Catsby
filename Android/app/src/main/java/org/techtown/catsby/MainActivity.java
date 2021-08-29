@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true ;
+        getMenuInflater().inflate(R.menu.actionbar_write, menu);
+        return true;
     }
 
     @Override
@@ -58,9 +59,15 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             case R.id.action_notice:
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
+
+                case R.id.action_write:
+                Intent writemainIntent = new Intent(this, activity_writemain.class);
+                startActivity(writemainIntent);
+                break;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
