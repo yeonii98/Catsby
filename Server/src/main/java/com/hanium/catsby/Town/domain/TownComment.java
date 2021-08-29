@@ -1,6 +1,11 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
-import com.hanium.catsby.User.domain.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hanium.catsby.user.domain.MyComment;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.util.BaseTimeEntity;
+import com.hanium.catsby.town.domain.TownCommunity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,18 +19,18 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "Town_Comment")
-public class TownComment {
+public class TownComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "townComment_id")
     private int id;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
 
@@ -33,9 +38,5 @@ public class TownComment {
 
     //    @CreationTimestamp//insert시 시간 자동 저장
     private String date;
-
-    private String created_time;
-
-    private String updated_time;
 
 }

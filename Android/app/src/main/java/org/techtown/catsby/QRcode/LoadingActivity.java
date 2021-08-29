@@ -1,4 +1,4 @@
-package org.techtown.catsby.QRcode;
+package org.techtown.catsby.qrcode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -112,6 +113,7 @@ public class LoadingActivity extends AppCompatActivity {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).setAlwaysShow(true);
         settingsClient.checkLocationSettings(builder.build())
                 .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(LoadingActivity.this);
@@ -160,7 +162,7 @@ public class LoadingActivity extends AppCompatActivity {
             latitude = locationResult.getLastLocation().getLatitude();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-            Intent intent = new Intent(LoadingActivity.this, qrcodeActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, ScannerActivity.class);
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
             startActivity(intent);

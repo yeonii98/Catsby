@@ -1,7 +1,12 @@
-package com.hanium.catsby.Bowl.service;
+package com.hanium.catsby.bowl.service;
 
-import com.hanium.catsby.Bowl.domain.Bowl;
-import com.hanium.catsby.Bowl.repository.BowlRepository;
+import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.BowlUser;
+import com.hanium.catsby.bowl.repository.BowlRepository;
+import com.hanium.catsby.bowl.repository.BowlUserRepository;
+import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +18,12 @@ import java.util.List;
 public class BowlService {
 
     private final BowlRepository bowlRepository;
+    private final BowlUserRepository bowlUserRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public Long enroll(Bowl bowl){
+    public Long enroll(Bowl bowl) throws DuplicateBowlInfoException {
+        isDuplicatedBowlInfo(bowl.getInfo());
         bowlRepository.save(bowl);
         return bowl.getId();
     }
@@ -23,6 +31,12 @@ public class BowlService {
     @Transactional(readOnly = true)
     public List<Bowl> findAllBowls(){
         return bowlRepository.findAllBowl();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Bowl> findUserBowls(String userId){
+        Users user = userRepository.findUserByUid(userId);
+        return bowlRepository.findBowlByUsers(user.getId());
     }
 
     @Transactional(readOnly = true)
@@ -42,5 +56,24 @@ public class BowlService {
     @Transactional
     public void delete(Long id) {
        bowlRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Long saveBowlUser(String  uid, String bowlInfo, double latitude, double longitude)  {
+        Users user = userRepository.findUserByUid(uid);
+        Bowl bowl = bowlRepository.findByBowlInfo(bowlInfo).get(0);
+        bowl.setLatitude(latitude);
+        bowl.setLongitude(longitude);
+
+        bowlUserRepository.save(new BowlUser(bowl, user));
+
+        return bowl.getId();
+    }
+
+    public void isDuplicatedBowlInfo(String bowlIfo) throws DuplicateBowlInfoException {
+        List<Bowl> bowl = bowlRepository.findByBowlInfo(bowlIfo);
+        if (bowl.size() > 0) {
+            throw new DuplicateBowlInfoException("중복 되었습니다.");
+        }
     }
 }

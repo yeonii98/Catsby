@@ -1,9 +1,7 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
-//import com.hanium.catsby.Town.User.domain.User;
-import com.hanium.catsby.Town.domain.TownCommunity;
-
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.util.BaseTimeEntity;
+import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,21 +15,19 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "Town_Like")
-public class TownLike {
+public class TownLike extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int townLike_id;
+    @Column(name = "townLike_id")
+    private int id;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
-    @OneToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
-
-    private String created_time;
-
-    private String updated_time;
 }
+

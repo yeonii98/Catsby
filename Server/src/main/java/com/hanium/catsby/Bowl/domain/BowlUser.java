@@ -1,5 +1,6 @@
 package com.hanium.catsby.bowl.domain;
 
+import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 
@@ -8,7 +9,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name = "Bowl_User")
-public class BowlUser {
+public
+class BowlUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +25,8 @@ public class BowlUser {
     @JoinColumn(name = "user_id")
     private Users user;
 
+    public BowlUser(Bowl bowl, Users user) {
+        this.bowl = bowl;
+        this.user = user;
+    }
 }
