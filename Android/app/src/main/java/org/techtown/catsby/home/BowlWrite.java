@@ -1,4 +1,4 @@
-package org.techtown.catsby;
+package org.techtown.catsby.home;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
@@ -30,6 +31,7 @@ import com.gun0912.tedpermission.TedPermission;
 
 import android.Manifest;
 
+import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
@@ -55,41 +57,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Writemain extends AppCompatActivity{
+public class BowlWrite extends AppCompatActivity{
     ListView listview ;
-
 
     private static final String TAG = "blackjin";
     private Boolean isPermission = true;
 
+    //ImageView imageView;
+    //Button btnCamera;
+
     private static final int PICK_FROM_ALBUM = 1;
+
+    //String mCurrentPhotoPath;
     private static final int PICK_FROM_CAMERA = 2;
 
     BowlService bowlService = RetrofitClient.getBowlService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
-
-    int[] postImg = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
-
     ArrayList<String> bowlNameArray = new ArrayList<>();
-    ArrayList<Integer> bowIdArray = new ArrayList<>();
     static ArrayList<Bowl> bowlList = new ArrayList<>();
     String allContext;
     BowlCheckListAdapter adapter;
     static int cPosition;
 
     Uri photoUri;
-
     File tempFile;
     File image;
-    int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    ImageView contextView;
+    EditText postContext;
+    int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("홈 화면 글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,7 +101,7 @@ public class Writemain extends AppCompatActivity{
             loadBowls(user.getUid());
         }
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -115,25 +118,34 @@ public class Writemain extends AppCompatActivity{
 
         findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  takePhoto();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btnCamera:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
+                        break;
+                }
             }
         });
 
-        Button postButton = (Button) findViewById(R.id.btn_signupfinish) ;
+        Button postButton = findViewById(R.id.btn_signupfinish);
         postButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText postContext = (EditText)findViewById(R.id.context);
-                allContext = (String) postContext.getText().toString();
-                savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-                postContext.setText("게시글 저장 완료");
+                postContext = findViewById(R.id.context);
+                if (image != null) {
+                    allContext = postContext.getText().toString();
+                    savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
+                    contextView.setImageResource(0);
+                    postContext.setText("");
+                    image = null;
+                }else{
+                    Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
     }
+
 
     private void savePost(File file, int id, String uid, String context) {
 
@@ -188,7 +200,7 @@ public class Writemain extends AppCompatActivity{
                         adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
                     }
 
-                    listview = (ListView) findViewById(R.id.listview1);
+                    listview = findViewById(R.id.listview1);
                     listview.setAdapter(adapter);
                 }
 
@@ -204,12 +216,12 @@ public class Writemain extends AppCompatActivity{
 
     public static void clickSave(int clickPosition){
         cPosition = clickPosition;
-        //System.out.println("click ~~~ position = " + clickPosition);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
@@ -241,8 +253,6 @@ public class Writemain extends AppCompatActivity{
 
                 image = new File(cursor.getString(column_index));
                 tempFile = new File(cursor.getString(column_index));
-                //System.out.println("tempFile = " + tempFile);
-
                 Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
 
             } finally {
@@ -319,12 +329,17 @@ public class Writemain extends AppCompatActivity{
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     private void setImage() {
+        contextView = findViewById(R.id.imageView);
+        Glide.with(this).load(photoUri).into(contextView);
 
+        //회전 방지
         ImageView imageView = findViewById(R.id.imageView);
+        Glide.with(this).load(photoUri).into(imageView);
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
-        imageView.setImageBitmap(originalBm);
+        contextView.setImageBitmap(originalBm);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -373,12 +388,3 @@ public class Writemain extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 }
-
-
-
-
-
-
-
-
-

@@ -10,11 +10,8 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlActivity;
 import org.techtown.catsby.home.model.Bowl;
-import org.techtown.catsby.retrofit.dto.BowlDto;
-
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

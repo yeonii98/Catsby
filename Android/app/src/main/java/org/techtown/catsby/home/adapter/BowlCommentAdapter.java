@@ -1,4 +1,4 @@
-package org.techtown.catsby.setting;
+package org.techtown.catsby.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,16 +16,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
-import org.techtown.catsby.retrofit.dto.BowlCommentUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -34,9 +29,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.ViewHolder> {
+public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.ViewHolder> {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     List<BowlCommentUsingComment> bowlCommentData;
@@ -47,7 +43,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
     View view;
     boolean[] bool;
 
-    MainCommentAdapter(List<BowlCommentUsingComment> list) {
+    public BowlCommentAdapter(List<BowlCommentUsingComment> list) {
         this.bowlCommentData = list ;
         bool = new boolean[bowlCommentData.size()];
     }
@@ -60,7 +56,6 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
-        //Button commentUpdateFinish1;
 
         ViewHolder(View itemView) {
             super(itemView) ;
@@ -68,29 +63,15 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
 
-            for(int i=0; i < bowlCommentData.size(); i++){
-                UserService userService = RetrofitClient.getUser();
-                Call<User> call = userService.getUser(user.getUid());
-                int finalI = i;
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            User result = call.execute().body();
-                            assert result != null;
-                            if (!bool[finalI]){
-                                if (result.getId() == bowlCommentData.get(finalI).getUserId()){
-                                    bool[finalI] = true;
-                                }else{
-                                    bool[finalI] = false;
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            for (int i =0; i < bowlCommentData.size(); i ++) {
+                if (bool[i] == false){
+                    if(bowlCommentData.get(i).getUid().equals(user.getUid())){
+                        bool[i] = true;
                     }
-                });
-                thread.start();
+                    else{
+                        bool[i] = false;
+                    }
+                }
             }
         }
     }
@@ -108,12 +89,12 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         commentUpdate = (Button)view.findViewById(R.id.mainCmtUpdateBtn);
         commentUpdateFinish = (Button)view.findViewById(R.id.mainCmtUpdateFinishBtn);
 
-        MainCommentAdapter.ViewHolder vh = new MainCommentAdapter.ViewHolder(view) ;
+        BowlCommentAdapter.ViewHolder vh = new BowlCommentAdapter.ViewHolder(view) ;
         return vh ;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull MainCommentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull BowlCommentAdapter.ViewHolder holder, int position) {
         if (bowlCommentData.size() > 0 ){
             String text = bowlCommentData.get(position).getContent() ;
             String nickName = bowlCommentData.get(position).getNickname();
@@ -128,10 +109,6 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
                 }
             });
 
-            for(int i =0; i< bowlCommentData.size(); i++){
-                System.out.println("comment = !!!!" + bool[i]);
-            }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -141,6 +118,10 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
             if (bool[position]) {
                 holder.commentDelete1.setVisibility(VISIBLE);
                 holder.commentUpdate1.setVisibility(VISIBLE);
+            }
+            else{
+                holder.commentDelete1.setVisibility(INVISIBLE);
+                holder.commentUpdate1.setVisibility(INVISIBLE);
             }
 
             commentUpdate.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +157,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         bowlCommunityService.deleteComment(id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                MainCommentAdapter adapter = new MainCommentAdapter(bowlCommentData);
+                BowlCommentAdapter adapter = new BowlCommentAdapter(bowlCommentData);
                 bowlCommentData.remove(position);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRemoved(view.getVerticalScrollbarPosition());
