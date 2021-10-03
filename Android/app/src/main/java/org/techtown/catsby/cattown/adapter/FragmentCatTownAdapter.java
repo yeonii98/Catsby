@@ -1,5 +1,6 @@
 package org.techtown.catsby.cattown.adapter;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.CatTownDetailActivity;
 import org.techtown.catsby.cattown.model.Cat;
+import org.techtown.catsby.retrofit.dto.CatProfile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTownAdapter.ViewHolder> {
     private ArrayList<Cat> catdata;
@@ -78,9 +81,9 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         holder.townCatLoc.setText(cat.getCatloc());
         /*   error   */
         //holder.townHelpPeople.setText(cat.getHelpPeople());
+
     }
 
-    //지연님 코드
     public Bitmap makeBitMap(String s){
         int idx = s.indexOf("=");
         byte[] b = binaryStringToByteArray(s.substring(idx+1));
@@ -118,20 +121,18 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         }
     }
 
+//    public void refresh(List<CatProfile> catdata)
+//    {
+//        this.catdata = catdata;
+//        notifyDataSetChanged();
+//    }
+
+
     @Override
     public int getItemCount() {
         return catdata.size();
     }
 
-    /*
-    public void addItem(int picture, String catName, int helper) {
-        Cat cat = new Cat(null,null,0);
-        //cat.setCatPicture(picture);
-        cat.setName(catName);
-        cat.setHelpPeople(helper);
-    }
-
-     */
 
     public void addItem(Cat cat) { catdata.add(cat); }
 

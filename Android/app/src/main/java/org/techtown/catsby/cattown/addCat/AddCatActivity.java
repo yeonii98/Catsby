@@ -25,11 +25,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
+import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
+import org.techtown.catsby.community.data.service.TownLikeService;
+import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,6 +77,9 @@ public class AddCatActivity extends AppCompatActivity{
     private TextView imageuri;
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
+    private CatService catService = RetrofitClient.catService();
+
+    FragmentCatTownAdapter adapter;
 
     byte imageArray [];
     Bitmap imgBitmap;
@@ -98,11 +106,11 @@ public class AddCatActivity extends AppCompatActivity{
 
                     //2. Bitmap to byteArray
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
                     byte[] bytes = baos.toByteArray();
 
                     //3. byteArray to BinaryString
-                    cimage = byteArrayToBinaryString(bytes);
+                    cimage = ImageUtils.byteArrayToBinaryString(bytes);
                     //cimage = "&image=" + byteArrayToBinaryString(bytes);
 
                     //System.out.println("@imgBitmap = " + imgBitmap);
@@ -116,7 +124,6 @@ public class AddCatActivity extends AppCompatActivity{
         }
     }
 
-
     //이미지 업로드
     public void imageUpload(View view) {
         Intent intent = new Intent();
@@ -124,33 +131,6 @@ public class AddCatActivity extends AppCompatActivity{
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 101);
     }
-
-    public byte[] bitmapToByteArray( Bitmap bitmap ) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
-        byte[] byteArray = stream.toByteArray() ;
-        return byteArray ;
-    }
-
-    // 바이너리 바이트 배열을 스트링으로
-    public static String byteArrayToBinaryString(byte[] b) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; ++i) {
-            sb.append(byteToBinaryString(b[i]));
-        }
-        return sb.toString();
-    }
-
-    // 바이너리 바이트를 스트링으로
-    public static String byteToBinaryString(byte n) {
-        StringBuilder sb = new StringBuilder("00000000");
-        for (int bit = 0; bit < 8; bit++) {
-            if (((n >> bit) & 1) > 0) {
-            sb.setCharAt(7 - bit, '1');
-            }
-        }
-        return sb.toString(); }
-
 
     public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
         File tempFile = new File(getCacheDir(), imgName);    // 파일 경로와 이름
@@ -199,19 +179,13 @@ public class AddCatActivity extends AppCompatActivity{
             }
         });
 
-
-        //레트로핏
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                finish();
             }
         });
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,27 +218,34 @@ public class AddCatActivity extends AppCompatActivity{
 
                 System.out.println("uidd"+uid);
 
-                CatService retrofitService = retrofit.create(CatService.class);
-                Call<CatProfile> call = retrofitService.setPost(
-                        uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
-                call.enqueue(new Callback<CatProfile>(){
+                if (imageuri.getText().equals("사진이 선택되었습니다.")) {
+                    Call<CatProfile> call = catService.setPost(
+                            uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
+                    call.enqueue(new Callback<CatProfile>(){
 
-                    @Override
-                    public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
-                        if(response.isSuccessful()) {
-                            System.out.println("성공");
-                            CatProfile cat = response.body();
-                        }
-                        else {
-                            //System.out.println("실패");
-                        }
-                    }
+                        @Override
+                        public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
+                            if(response.isSuccessful()) {
+                                System.out.println("성공");
 
-                    @Override
-                    public void onFailure(Call<CatProfile> call, Throwable t) {
-                        //System.out.println("통신 실패");
-                    }
-                });
+                                CatProfile cat = response.body();
+                                adapter.notifyDataSetChanged();
+                            }
+                            else {
+                                //System.out.println("실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CatProfile> call, Throwable t) {
+                            //System.out.println("통신 실패");
+                        }
+                    });
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "고양이의 사진을 등록해주세요", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
         });

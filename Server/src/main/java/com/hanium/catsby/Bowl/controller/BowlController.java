@@ -1,13 +1,11 @@
 package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
-import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.service.BowlService;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -76,15 +74,6 @@ public class BowlController {
         bowlService.delete(id);
     }
 
-    @GetMapping("/bowls")
-    public BowlResult bowls() {
-        List<Bowl> findBowls = bowlService.findAllBowls();
-        List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
-                .collect(Collectors.toList());
-        return new BowlResult(collect);
-    }
-
     @GetMapping("/bowls/{uid}")
     public BowlResult userBowlList(@PathVariable("uid") String uid) {
         List<Bowl> findBowls = bowlService.findUserBowls(uid);
@@ -100,17 +89,27 @@ public class BowlController {
         return ResponseEntity.ok(new CreateBowlResponse(bowlId));
     }
 
-    @GetMapping("/bowl/location/{bowlId}")
-    public ResponseEntity<BowlLocationResponse> bowlLocation(@PathVariable("bowlId") Long id) {
-        Bowl bowl = bowlService.findOne(id);
-        return ResponseEntity.ok(new BowlLocationResponse(bowl));
-    }
-
     @GetMapping("/bowl/feed/{bowlId}")
     public ResponseEntity<BowlResult> bowlFeed(@PathVariable("bowlId") Long id) {
         return ResponseEntity.ok(new BowlResult<List<BowlFeedDto>>(bowlService.findBowlFeed(id)));
     }
 
+    @GetMapping("/bowl/info/{bowlId}/{uid}")
+    public com.hanium.catsby.bowl.domain.dto.BowlDto bowlInfo(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid){
+        return bowlService.getBowl(id, uid);
+    }
+
+    @PatchMapping("/bowl/image/{bowlId}/{uid}")
+    public ResponseEntity<BowlResult<String>> updateImage(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid, @RequestBody BowlImageResponse image) {
+        bowlService.updateBowlImage(id, uid, image.getImage());
+        return ResponseEntity.ok(new BowlResult<>("success"));
+    }
+
+    @Data
+    static class BowlImageResponse {
+        private String image;
+    }
+    
     @Data
     static class BowlLocationResponse{
         Long id;

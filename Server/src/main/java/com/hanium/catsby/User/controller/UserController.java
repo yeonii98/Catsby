@@ -36,11 +36,6 @@ public class UserController {
         private String fcmToken;
     }
 
-    @GetMapping("/users")
-    public List<Users> users() {
-        return userService.findUsers();
-    }
-
     @GetMapping("/user/{uid}")
     public Users findUser(@PathVariable("uid") String uid) {
         Users user = userService.findUsersByUid(uid);
@@ -54,11 +49,18 @@ public class UserController {
         return new UpdateUserAddressResponse(findUser.getId(), findUser.getAddress());
     }
 
-    @PutMapping("/user/nickname/{uid}")
-    public UpdateUserNicknameResponse updateUserNicknameResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserNicknameRequest request) {
-        userService.updateNickname(uid, request.getNickname());
+    @PatchMapping("/user/nickname/{uid}")
+    public UpdateUserNicknameResponse updateUserNicknameResponse(@PathVariable("uid") String uid, @RequestParam String nickname) {
+        userService.updateNickname(uid, nickname);
         Users findUser = userService.findUsersByUid(uid);
         return new UpdateUserNicknameResponse(findUser.getId(), findUser.getNickname());
+    }
+
+    @PutMapping("/user/image/{uid}")
+    public UpdateUserImageResponse UpdateUserImageResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserImageRequest request) {
+        userService.updateImage(uid, request.getImage());
+        Users findUser = userService.findUsersByUid(uid);
+        return new UpdateUserImageResponse(findUser.getId(), findUser.getAddress());
     }
 
     @Data
@@ -75,16 +77,23 @@ public class UserController {
     }
 
     @Data
-    static class UpdateUserNicknameRequest{
+    @AllArgsConstructor
+    static class UpdateUserNicknameResponse{
         private Long id;
         private String nickname;
     }
 
     @Data
-    @AllArgsConstructor
-    static class UpdateUserNicknameResponse{
+    static class UpdateUserImageRequest{
         private Long id;
-        private String nickname;
+        private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateUserImageResponse{
+        private Long id;
+        private String image;
     }
 
     @PatchMapping("/user/token/{uid}")
