@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/commentlist_text"
-            android:layout_width="146dp"
+            android:layout_width="151dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
@@ -65,25 +65,27 @@
             android:text="댓글 리스트입니다...." />
 
         <Button
-            android:id="@+id/commentlist_update"
+            android:id="@+id/comment_list_update"
             android:layout_marginTop="10dp"
-            android:layout_width="15dp"
+            android:layout_width="50dp"
             android:layout_height="34dp"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="#FFACDBE8"
             android:text="수정"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
 
         <Button
-            android:id="@+id/commentlist_delete"
+            android:id="@+id/comment_list_delete"
             android:layout_marginTop="10dp"
-            android:layout_width="15dp"
+            android:layout_width="50dp"
             android:layout_height="34dp"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="#FFACDBE8"
             android:text="삭제"
             android:layout_marginRight="10dp"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -98,17 +100,9 @@
         android:layout_marginRight="7dp"
         android:layout_alignParentBottom="true">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/image_profile"
-            android:layout_marginLeft="5dp"
-            android:background="@color/black"/>
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image_profile"
             android:hint="댓글을 입력하세요..."
             android:id="@+id/commentlist_add"
             android:layout_centerVertical="true"

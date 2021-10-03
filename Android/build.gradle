@@ -18,6 +18,7 @@ buildscript {
         //페이스북 로그인
         classpath 'com.google.gms:google-services:4.3.8'
 
+        classpath 'com.edmodo:cropper:1.0.1'
     }
 }
 

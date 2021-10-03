@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "org.techtown.catsby"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -86,7 +86,7 @@ dependencies {
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    //annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //
     //implementation 'org.conscrypt:conscrypt-android:2.2.1'
@@ -126,9 +126,8 @@ dependencies {
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //카메라 crop 및 회전 방지
+    implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+
 }
-
 apply plugin: 'com.google.gms.google-services'
-
-
-

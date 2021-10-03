@@ -21,9 +21,11 @@ public class BowlLikeService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long saveBowlLike(BowlLike bowlLike, Long userId, Long communityId){
+    public Long saveBowlLike(BowlLike bowlLike, String uid, Long userId, Long communityId){
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(communityId);
+        bowlCommunity.setLikeCount(bowlCommunity.getLikeCount()+1);
         Users users = userRepository.findUser(userId);
+        bowlLike.setUid(uid);
         bowlLike.setUser(users);
         bowlLike.setBowlCommunity(bowlCommunity);
         bowlLikeRepository.save(bowlLike);
@@ -42,7 +44,9 @@ public class BowlLikeService {
 
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long communityId, Long id) {
+        BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(communityId);
+        bowlCommunity.setLikeCount(bowlCommunity.getLikeCount()-1);
         bowlLikeRepository.deleteById(id);
     }
 }

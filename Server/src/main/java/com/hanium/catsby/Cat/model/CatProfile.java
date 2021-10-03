@@ -15,8 +15,8 @@ public class CatProfile {
     //@Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cat_id;
-
-    private long userId;
+    private String user_add;
+    private long user_id;
     private String name;
     private String health;
     private String address;
@@ -32,9 +32,10 @@ public class CatProfile {
 
     //0811
     @Builder
-    public CatProfile(long userId, String name, String health, String address,
+    public CatProfile(long user_id, String user_add, String name, String health, String address,
                       int gender, String image, String content, int spayed) {
-        this.userId = userId;
+        this.user_id = user_id;
+        this.user_add = user_add;
         this.cat_id = cat_id;
         this.name = name;
         this.health = health;
@@ -47,14 +48,28 @@ public class CatProfile {
         this.updated_time = updated_time;
     }
 
+    public String getUser_add() {
+        return user_add;
+    }
 
+    public void setUser_add(String user_add) {
+        this.user_add = user_add;
+    }
 
-    public Integer getCat_id() {
+    public int getCat_id() {
         return cat_id;
     }
 
-    public void setCat_id(Integer cat_id) {
+    public void setCat_id(int cat_id) {
         this.cat_id = cat_id;
+    }
+
+    public long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {

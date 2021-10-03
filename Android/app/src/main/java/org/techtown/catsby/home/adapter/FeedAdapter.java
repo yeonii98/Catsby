@@ -12,23 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
-import org.techtown.catsby.retrofit.dto.BowlCommentPost;
+import org.techtown.catsby.retrofit.dto.BowlCommentList;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlLike;
+import org.techtown.catsby.retrofit.dto.BowlLikeList;
 import org.techtown.catsby.retrofit.dto.BowlLikeResponse;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.home.BowlCommentActivity;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     UserService userService = RetrofitClient.getUser();
     View view;
+    private Bitmap bm = null;
 
     Button postButton;
     EditText commentEditText;
@@ -60,40 +60,40 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     TextView textView;
     Context context;
     boolean[] bool;
+    static boolean repeat = false;
 
-    ArrayList<Integer> likeCommunity = new ArrayList<>();
-    HashMap<Integer, Integer> totalLike = new HashMap<>();
-    HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
+    public static List<BowlCommentUsingComment> MComment;
+    static HashMap<Integer, Integer> likeCommunity = new HashMap<>();
+    static HashMap<Integer, Integer> totalLike = new HashMap<>();
+    static HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
         bool = new boolean[itemData.size()];
-
-        for (int i =0; i < itemData.size(); i++){
-            loadTotalLike(itemData.get(i).getId());
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView bowlImg;
+        private ImageView userImg;
         private TextView userName;
         private ImageView feedImg;
         private TextView content;
 
-        private Button putButton1 = (Button)itemView.findViewById(R.id.putButton);
-        private Button deleteButton1 = (Button)itemView.findViewById(R.id.deleteButton);
-        private EditText putText1 = (EditText)itemView.findViewById(R.id.feed_content_EditText);
-        private TextView textView1 = (TextView)itemView.findViewById(R.id.feed_content );
-        private Button putFinishButton1 = (Button)itemView.findViewById(R.id.putFinishButton);
+        private Button itemViewPutButton = (Button)itemView.findViewById(R.id.putButton);
+        private Button itemViewDeleteButton = (Button)itemView.findViewById(R.id.deleteButton);
+        private EditText itemViewPutText = (EditText)itemView.findViewById(R.id.feed_content_EditText);
+        private TextView itemViewTextView = (TextView)itemView.findViewById(R.id.feed_content );
+        private Button itemViewPutFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
+        private TextView dateView = (TextView)itemView.findViewById(R.id.date);
 
         private ImageView likeButton= (ImageView)itemView.findViewById(R.id.likeButton);
         private ImageView likeFullButton= (ImageView)itemView.findViewById(R.id.likeFull);
         private TextView totalCountLike = itemView.findViewById(R.id.countLikes);
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             context = view.getContext();
-            bowlImg = itemView.findViewById(R.id.feed_bowlImg);
+            userImg = itemView.findViewById(R.id.feed_userImg);
             userName = itemView.findViewById(R.id.feed_username);
             feedImg = itemView.findViewById(R.id.feed_img);
             content = itemView.findViewById(R.id.feed_content);
@@ -104,6 +104,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
             textView = (TextView)itemView.findViewById(R.id.feed_content);
+            dateView = (TextView) itemView.findViewById(R.id.date);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,11 +112,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     if (bool[getAdapterPosition()]) {
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION) {
-                            ViewHolder.this.putButton1.setVisibility(View.INVISIBLE);
-                            ViewHolder.this.putFinishButton1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.textView1.setVisibility(View.GONE);
-                            ViewHolder.this.putText1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.putText1.setCursorVisible(true);
+                            ViewHolder.this.itemViewPutButton.setVisibility(View.INVISIBLE);
+                            ViewHolder.this.itemViewPutFinishButton.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewTextView.setVisibility(View.GONE);
+                            ViewHolder.this.itemViewPutText.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewPutText.setCursorVisible(true);
                         }
                     }
                 }
@@ -155,27 +156,31 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             itemView.findViewById(R.id.putFinishButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String putMessage1 = ViewHolder.this.putText1.getText().toString();
-                    System.out.println("putMessage = " + putMessage1);
+                    String putMessage1 = ViewHolder.this.itemViewPutText.getText().toString();
 
                     if (!putMessage1.equals("클릭하여 글을 작성해주세요")){
                         updateCommunity(itemData.get(getAdapterPosition()).getId(), putMessage1);
-                        ViewHolder.this.textView1.setText(putMessage1);
+                        ViewHolder.this.itemViewTextView.setText(putMessage1);
                     }
-
-                    ViewHolder.this.putButton1.setVisibility(View.VISIBLE);
-                    ViewHolder.this.putFinishButton1.setVisibility(View.INVISIBLE);
-                    ViewHolder.this.putText1.setVisibility(View.GONE);
-                    ViewHolder.this.textView1.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutButton.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutFinishButton.setVisibility(View.INVISIBLE);
+                    ViewHolder.this.itemViewPutText.setVisibility(View.GONE);
+                    ViewHolder.this.itemViewTextView.setVisibility(View.VISIBLE);
                 }
             });
 
-            feedCommentButton.setOnClickListener(new View.OnClickListener() {
+            itemView.findViewById(R.id.feed_comment).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     loadComments(itemData.get(getAdapterPosition()).getId(), getAdapterPosition());
                 }
             });
+
+            for (int i =0; i < itemData.size(); i++){
+                if (!totalLike.containsKey(itemData.get(i).getId())){
+                    totalLike.put(itemData.get(i).getId(), itemData.get(i).getLikeCount());
+                }
+            }
 
             for (int i =0; i < itemData.size(); i ++) {
                 if (bool[i] == false){
@@ -189,6 +194,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         }
     }
 
+
+
     @NonNull
     @Override
     public FeedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -199,98 +206,87 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-        EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
-        Feed item = itemData.get(position);
-        holder.bowlImg.setImageResource(item.getBowlImg());
-        holder.userName.setText(item.getNickName());
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
+        View otherView = inflater.inflate(R.layout.activity_maincomment, null, false);
 
+        otherView.findViewById(R.id.post_save_button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        Feed item = itemData.get(position);
+        holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
         holder.feedImg.setImageBitmap(bmp);
+
+        String date = item.getCreateDate();
+        date = date.substring(0, 10);
+        holder.dateView.setText(date);
+
+        if (item.getUserImg() == null){
+            holder.userImg.setImageResource(R.drawable.catsby_logo);
+        } else{
+            bm = makeBitMap(item.getUserImg());
+            holder.userImg.setImageBitmap(bm);
+        }
+
         holder.content.setText(item.getContent());
-
-        if (likeCommunity.size() == 0){
-            bowlCommunityService.getLikes(user.getUid()).enqueue(new Callback<List<BowlLike>>() {
+        if (likeCommunity.size() == 0 && !repeat){
+            repeat = true;
+            bowlCommunityService.getLikes(user.getUid()).enqueue(new Callback<BowlLikeList>() {
                 @Override
-                public void onResponse(Call<List<BowlLike>> call, Response<List<BowlLike>> response) {
+                public void onResponse(Call<BowlLikeList> call, Response<BowlLikeList> response) {
                     if(response.isSuccessful()) {
-                        List<BowlLike> bowlResult = response.body();
-                        assert bowlResult != null;
-                        if(likeCommunity.size() == 0){
-                            for (BowlLike bowlLike : bowlResult) {
-                                likeCommunity.add(bowlLike.getBowlCommunity().getId());
-                                likeByCommunity.put(bowlLike.getBowlCommunity().getId(), bowlLike.getId());
+                        BowlLikeList bowlResult = response.body();
 
-                        }}
-                        if (likeCommunity.contains(itemData.get(position).getId())){
+                        assert bowlResult != null;
+                        for (BowlLike bowlLike : bowlResult.getBowlLikes()) {
+                            likeCommunity.put(bowlLike.getBowlCommunityId(), 0);
+                            likeByCommunity.put(bowlLike.getBowlCommunityId(), bowlLike.getId());
+                        }
+
+                        if (likeCommunity.containsKey(itemData.get(position).getId())){
                             holder.likeButton.setVisibility(View.GONE);
                             holder.likeFullButton.setVisibility(View.VISIBLE);
+                            if (holder.totalCountLike.getText().equals("0")){
+                                holder.totalCountLike.setText("");
+                            }
                         } else{
                             holder.likeButton.setVisibility(View.VISIBLE);
                             holder.likeFullButton.setVisibility(View.GONE);
                         }
                     }
                 }
+
                 @Override
-                public void onFailure(Call<List<BowlLike>> call, Throwable t) {
-                    System.out.println("t.getMessage() = " + t.getMessage());
+                public void onFailure(Call<BowlLikeList> call, Throwable t) {
+
                 }
+
             });
-        }
-
-        if (likeCommunity.size() > 0){
-            if (likeCommunity.contains(itemData.get(position).getId())){
-                holder.likeButton.setVisibility(View.GONE);
-                holder.likeFullButton.setVisibility(View.VISIBLE);
-            } else{
-                holder.likeButton.setVisibility(View.VISIBLE);
-                holder.likeFullButton.setVisibility(View.GONE);
-            }
-        }
-
-        if (bool[position]) {
-            holder.putButton1.setVisibility(View.VISIBLE);
-            holder.deleteButton1.setVisibility(View.VISIBLE);
-        } else{
-            holder.putButton1.setVisibility(View.GONE);
-            holder.deleteButton1.setVisibility(View.GONE);
         }
 
         if (totalLike.containsKey(itemData.get(position).getId())){
             holder.totalCountLike.setText(totalLike.get(itemData.get(position).getId()).toString());
         }
 
-        postButton.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String contextMessage = commentEditTextPost.getText().toString();
-                if (!contextMessage.equals("")) {
-                    postComment(user.getUid(), itemData.get(position).getId(), contextMessage);
-                    commentEditTextPost.setText("");
-                }else{
-                    Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+        if (likeCommunity.containsKey(itemData.get(position).getId())){
+            holder.likeButton.setVisibility(View.GONE);
+            holder.likeFullButton.setVisibility(View.VISIBLE);
+        } else{
+            holder.likeButton.setVisibility(View.VISIBLE);
+            holder.likeFullButton.setVisibility(View.GONE);
+        }
 
-    private void loadTotalLike(int communityId){
-        bowlCommunityService.getTotalLikes(communityId).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()) {
-                    Integer count = response.body();
-                    if (!totalLike.containsKey(communityId)){
-                        totalLike.put(communityId, count);
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-
+        if (bool[position]) {
+            holder.itemViewPutButton.setVisibility(View.VISIBLE);
+            holder.itemViewDeleteButton.setVisibility(View.VISIBLE);
+        } else{
+            holder.itemViewPutButton.setVisibility(View.GONE);
+            holder.itemViewDeleteButton.setVisibility(View.GONE);
+        }
     }
 
     private void updateCommunity(int communityId, String changeTest) {
@@ -308,10 +304,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     private void deleteLike(int deleteLikeId, int communityId){
-        bowlCommunityService.deleteLike(deleteLikeId).enqueue(new Callback<Void>() {
+        bowlCommunityService.deleteLike(communityId, deleteLikeId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 likeByCommunity.remove(communityId);
+                likeCommunity.remove(communityId);
             }
 
             @Override
@@ -320,6 +317,34 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
     }
+
+
+    public byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
+        }
+        return total;
+    }
+
+    public byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public Bitmap makeBitMap(String s) {
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
+        return bm;
+    }
+
 
     private void deleteCommunity(int position, int deleteId){
         bowlCommunityService.deleteCommunity(deleteId).enqueue(new Callback<Void>() {
@@ -347,13 +372,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 if (response.isSuccessful()) {
                     User result = response.body();
                     int idByUid = result.getId();
-
                     if (idByUid == communityUserId){
                         deleteCommunity(position, itemData.get(position).getId());
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println("t.getMessage() = " + t.getMessage());
@@ -365,7 +388,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         bowlCommunityService.saveLike(uid, communityId).enqueue(new Callback<BowlLikeResponse>() {
             @Override
             public void onResponse(Call<BowlLikeResponse> call, Response<BowlLikeResponse> response) {
-                likeCommunity.add(communityId);
+                likeCommunity.put(communityId, 0);
                 likeByCommunity.put(communityId, response.body().getId());
                 totalLike.put(communityId, totalLike.get(communityId)+1);
             }
@@ -378,46 +401,34 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         });
     }
 
-    private void postComment(String uid, int id, String context) {
-        BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
-        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
-            @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                System.out.println("save success");
-            }
-
-            @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-    }
-
     private void loadComments(long communityId, int position) {
-        bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
+        bowlCommunityService.getComments(communityId).enqueue(new Callback<BowlCommentList>() {
             @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
+            public void onResponse(Call<BowlCommentList> call, Response<BowlCommentList> response) {
                 if(response.isSuccessful()){
-                    List<BowlComment> bowlComments = response.body();
+                    BowlCommentList bowlComments = response.body();
 
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BowlCommentActivity.class);
 
-                    List<BowlComment> tempComment = bowlComments;
+                    BowlCommentList tempComment = bowlComments;
                     List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
-                    for (int i =0; i < tempComment.size(); i++){
-                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate(), tempComment.get(i).getUser().getId(), tempComment.get(i).getUid());
+                    for (int i =0; i < tempComment.getBowlComments().size(); i++){
+                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.getBowlComments().get(i).getId(), tempComment.getBowlComments().get(i).getUser().getNickname(), tempComment.getBowlComments().get(i).getContent(), tempComment.getBowlComments().get(i).getCreateDate(), tempComment.getBowlComments().get(i).getUser().getId(), tempComment.getBowlComments().get(i).getUid(), (int) communityId);
                         parameterBowlCommentList.add(bowlCommentUsingComment);
                     }
+                    MComment = parameterBowlCommentList;
                     intent.putExtra("comment", (Serializable) parameterBowlCommentList);
+
+                    int cId = (int) communityId;
+                    intent.putExtra("communityId", cId);
                     context.startActivity(intent);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
+            public void onFailure(Call<BowlCommentList> call, Throwable t) {
                 System.out.println("t.getMessage() = " + t.getMessage());
-
             }
         });
     }

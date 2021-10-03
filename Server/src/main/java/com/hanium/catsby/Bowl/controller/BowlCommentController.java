@@ -1,5 +1,6 @@
 package com.hanium.catsby.bowl.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.user.domain.Users;
@@ -9,7 +10,6 @@ import com.hanium.catsby.bowl.domain.BowlComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
 import com.hanium.catsby.user.service.UserService;
-import com.hanium.catsby.util.NotificationUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,19 +28,17 @@ public class BowlCommentController {
     private final NotificationService notificationService;
     private final UserService userService;
 
-    @PostMapping("/bowl-comment/{uid}/{communityId}")
+    @PostMapping("/bowl/community/comment/{uid}/{communityId}")
     public CreateBowlCommentResponse saveBowlComment(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
-        Long userId = userService.findUserByUid(uid);
+        Users user = userService.findUsersByUid(uid);
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
         bowlComment.setUid(uid);
+        Long id = bowlCommentService.savaComment(bowlComment, user.getId(), communityId);
 
-        Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
         String content = bowlComment.getBowlCommunity().getContent();
-        String message = userId + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
-        notificationService.saveNotification(bowlComment.getBowlCommunity().getUser(), message);
-
-        return new CreateBowlCommentResponse(id);
+        notificationService.saveNotification(user, content, NotificationType.COMMENT);
+        return new CreateBowlCommentResponse(id, user.getNickname(), bowlComment.getCreatedDate(), user.getId());
     }
 
     @Data
@@ -51,24 +49,25 @@ public class BowlCommentController {
     @Data
     static class CreateBowlCommentResponse{
         private Long id;
+        private String nickname;
+        private LocalDateTime date;
+        private Long userId;
 
-        public CreateBowlCommentResponse(Long id){
+        public CreateBowlCommentResponse(Long id, String nickname, LocalDateTime date, Long userId){
             this.id = id;
+            this.nickname = nickname;
+            this.date = date;
+            this.userId = userId;
         }
     }
 
-    @GetMapping("/bowl-comments")
-    public BowlCommentResult bowlComments() {
-        List<BowlComment> findcomments = bowlCommentService.findComments();
-        List<BowlCommentDto> collect = findcomments.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreatedDate(), c.getUser(), c.getBowlCommunity()))
+    @GetMapping("/bowl/community/comments/{communityId}")
+    public BowlCommentResult bowlComment(@PathVariable("communityId") Long communityId) {
+        List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
+        List<BowlCommentDto> collect = findComment.stream()
+                .map(bc -> new BowlCommentDto(bc.getContent(), bc.getCreatedDate(), bc.getUser(), bc.getBowlCommunity(), bc.getUid()))
                 .collect(Collectors.toList());
         return new BowlCommentResult(collect);
-    }
-
-    @GetMapping("/bowl-comments/{communityId}")
-    public List<BowlComment> bowlComment(@PathVariable("communityId") Long communityId) {
-        List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
-        return findComment;
     }
 
     @Data
@@ -82,11 +81,14 @@ public class BowlCommentController {
     static class BowlCommentDto{
         private String content;
         private LocalDateTime createDate;
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private Users user;
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private BowlCommunity bowlCommunity;
+        private String uid;
     }
 
-    @PutMapping("/bowl-comment/{commentId}")
+    @PutMapping("/bowl/community/comment/{commentId}")
     public UpdateBowlCommentResponse updateBowlComment(@PathVariable("commentId") Long commentId, @RequestBody UpdateBowlCommentRequest request){
         bowlCommentService.update(commentId, request.getContent());
         BowlComment findBowlComment = bowlCommentService.findBowlComment(commentId);
@@ -94,7 +96,7 @@ public class BowlCommentController {
 
     }
 
-    @DeleteMapping("/bowl-comment/{commentId}")
+    @DeleteMapping("/bowl/community/comment/{commentId}")
     public void DeleteBowlComment(@PathVariable("commentId") Long id){
         bowlCommentService.delete(id);
     }
