@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,16 @@ import org.techtown.catsby.cattown.CatTownDetailActivity;
 import org.techtown.catsby.cattown.model.Cat;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTownAdapter.ViewHolder> {
     private ArrayList<Cat> catdata;
+    private Bitmap bm;
 
     public FragmentCatTownAdapter(ArrayList<Cat> catdata) {
         this.catdata = catdata;
@@ -61,6 +67,11 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragmentcattown_list, parent, false);
         return new ViewHolder(view);
     }
@@ -74,7 +85,17 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         //Bitmap s2 = StringToBitmap(simage);
         //System.out.println(s2);
         //이미지 보류
-        holder.townCatImage.setImageBitmap(cat.getCatPicture());
+        try {
+            URL url = new URL(cat.getImage());
+            InputStream inputStream = url.openConnection().getInputStream();
+            bm = BitmapFactory.decodeStream(inputStream);
+            holder.townCatImage.setImageBitmap(bm);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         holder.townCatName.setText(cat.getName());
         holder.townCatId.setText(cat.getCat_id());
         holder.townCatGen.setText(cat.getCatgen());
