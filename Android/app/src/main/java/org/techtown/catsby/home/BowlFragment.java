@@ -19,10 +19,8 @@ import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlCommunityList;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
-import org.techtown.catsby.retrofit.dto.BowlLike;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -151,7 +148,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     BowlCommunityList BowlCommunityResult = (BowlCommunityList) response.body();
 
                     for (int i=0; i < BowlCommunityResult.getBowlCommunities().size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.getBowlCommunities().get(i).getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getImage(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getNickname(), BowlCommunityResult.getBowlCommunities().get(i).getImage().getBytes(), BowlCommunityResult.getBowlCommunities().get(i).getContent(), BowlCommunityResult.getBowlCommunities().get(i).getUid(), BowlCommunityResult.getBowlCommunities().get(i).getCreatedDate(), BowlCommunityResult.getBowlCommunities().get(i).getLikeCount());
+                        Feed feed = new Feed(BowlCommunityResult.getBowlCommunities().get(i).getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getImage(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getNickname(), BowlCommunityResult.getBowlCommunities().get(i).getImage(), BowlCommunityResult.getBowlCommunities().get(i).getContent(), BowlCommunityResult.getBowlCommunities().get(i).getUid(), BowlCommunityResult.getBowlCommunities().get(i).getCreatedDate(), BowlCommunityResult.getBowlCommunities().get(i).getLikeCount());
                         if (!feedList.contains(feed)){
                             feedList.add(feed);
                         }
@@ -191,20 +188,16 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_write:
-                Intent intent = new Intent(getActivity(), BowlWrite.class);
+                Intent intent = new Intent(getActivity(), BowlWriteActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.action_qrscan:
-
                 if(isPermission) {
                     Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
                     startActivity(intent2);
                 }
                 else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-
-
-
         }
         return super.onOptionsItemSelected(item);
     }
